@@ -667,6 +667,16 @@ body.tvMode .lastUpdated{
     body.tvMode #liveBadge{
       display: none !important;
     }
+    /* Mobile-only TV mode exit button */
+@media (max-width: 480px){
+  body.tvMode #tvModeBtn{
+    display: inline-block !important;
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    z-index: 9999;
+  }
+}
 
     /* =========================
        iPhone portrait optimisations
@@ -1018,19 +1028,15 @@ body:not(.adminUnlocked) #adminUnlockBtn{
       return true;
     }
 
-    function lockAdmin(isAuto=false){
-      // Safety: stop all timers when locking
-      for (const k of Object.keys(state)) state[k].timerRunning = false;
-
-      adminSession = { unlocked:false, allowed:[], label:"Locked" };
-      saveAdminSession();
-      clearAutoLockTimer();
-      saveState();
-      applyAdminUI();
-
-      if (isAuto) alert("Admin auto-locked after 10 minutes of inactivity.");
-      else alert("Admin locked");
-    }
+function lockAdmin(isAuto=false){
+  // Do NOT stop timers unlocked:false, allowed:[], label:"Locked" };  // Do NOT stop timers – match clock continues
+  saveAdminSession();
+  clearAutoLockTimer();
+  saveState();
+  applyAdminUI();
+  if (isAuto) alert("Admin auto-locked after 10 minutes of inactivity.");
+  else alert("Admin locked");
+}    
 
     function unlockAdmin(){
       const entered = prompt("Enter 4-digit admin PIN:");
