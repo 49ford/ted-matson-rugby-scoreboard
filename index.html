@@ -980,6 +980,8 @@ body:not(.adminUnlocked) #adminUnlockBtn{
     const AUTO_LOCK_MS = 10 * 60 * 1000;
     let autoLockTimer = null;
 
+    let isScorerDevice = false;
+
     function clearAutoLockTimer(){
       if (autoLockTimer) { clearTimeout(autoLockTimer); autoLockTimer = null; }
     }
@@ -1035,8 +1037,8 @@ function lockAdmin(isAuto=false){
   saveState();
   applyAdminUI();
   if (isAuto) alert("Admin auto-locked after 10 minutes of inactivity.");
-  else alert("Admin locked");
-}    
+  else alert("Admin locked");}
+ 
 
     function unlockAdmin(){
       const entered = prompt("Enter 4-digit admin PIN:");
@@ -1052,6 +1054,8 @@ function lockAdmin(isAuto=false){
         label: allowed.includes("*") ? "Admin: ALL" : `Admin: ${allowed.join(", ")}`
       };
       saveAdminSession();
+      isScorerDevice = true;
+      
       applyAdminUI();
       startOrResetAutoLockTimer();
       alert("Admin mode enabled");
@@ -1623,6 +1627,8 @@ function updateLastUpdated(){
       adminLockBtn.style.display   = adminSession.unlocked ? "inline-block" : "none";
 
       document.body.classList.toggle("adminUnlocked", adminSession.unlocked);
+if (adminSession.unlocked) {if (adminSession.un}
+  isScorerDevice = true;
 
       const div = currentDivision();
       const allowedHere = canEditDivision(div);
@@ -1859,6 +1865,10 @@ updateLastUpdated();
 
 // Auto-refresh spectator view every 15 seconds
 setInterval(() => {
+  // Never auto-refresh the scorer device
+  if (isScorerDevice) return;
+
+  // Only refresh spectators
   if (!document.body.classList.contains("adminUnlocked")) {
     location.reload();
   }
