@@ -679,6 +679,23 @@ body.tvMode .lastUpdated{
   .qrImage{
     width: 240px;
   }
+  /* ALWAYS show Admin Unlock on mobile */
+#adminUnlockBtn{
+  display: inline-block !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
+/* Mobile: ensure Admin Unlock is visible and tappable */
+body:not(.adminUnlocked) .topbar{
+  display: flex !important;
+  justify-content: center;
+}
+
+body:not(.adminUnlocked) #adminUnlockBtn{
+  display: inline-block !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
 
   header{ padding: 12px 10px; gap: 10px; }
   header img{ height: 54px; border-radius: 10px; padding: 5px; }
@@ -715,7 +732,6 @@ body.tvMode .lastUpdated{
   .timerDisplay{ font-size: 16px; min-width: 80px; }
   .timerPeriod{ font-size: 11px; padding: 4px 7px; }
   .refreshHint{ font-size: 12px; margin-top: 10px; }
-}
 
     /* =========================
        Add to Home Screen banner (iOS)
