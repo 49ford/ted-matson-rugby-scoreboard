@@ -1054,9 +1054,9 @@ function lockAdmin(isAuto = false){
         allowed,
         label: allowed.includes("*") ? "Admin: ALL" : `Admin: ${allowed.join(", ")}`
       };
+      
       saveAdminSession();
       isScorerDevice = true;
-
       applyAdminUI();
       startOrResetAutoLockTimer();
       alert("Admin mode enabled");
