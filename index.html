@@ -1031,15 +1031,16 @@ body:not(.adminUnlocked) #adminUnlockBtn{
     }
 
 function lockAdmin(isAuto = false){
-, allowed:[], label:"Locked" };  // Do NOT stop timers – match clock continues
+  // Do NOT stop timers – match clock continues
+  adminSession = { unlocked:false, allowed:[], label:"Locked" };
   saveAdminSession();
   clearAutoLockTimer();
   saveState();
   applyAdminUI();
+
   if (isAuto) alert("Admin auto-locked after 10 minutes of inactivity.");
   else alert("Admin locked");
-
-
+}
     function unlockAdmin(){
       const entered = prompt("Enter 4-digit admin PIN:");
       if (!entered) return;
