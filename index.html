@@ -1030,15 +1030,15 @@ body:not(.adminUnlocked) #adminUnlockBtn{
       return true;
     }
 
-function lockAdmin(isAuto=false){
-  // Do NOT stop timers unlocked:false, allowed:[], label:"Locked" };  // Do NOT stop timers – match clock continues
+function lockAdmin(isAuto = false){
+, allowed:[], label:"Locked" };  // Do NOT stop timers – match clock continues
   saveAdminSession();
   clearAutoLockTimer();
   saveState();
   applyAdminUI();
   if (isAuto) alert("Admin auto-locked after 10 minutes of inactivity.");
-  else alert("Admin locked");}
- 
+  else alert("Admin locked");
+
 
     function unlockAdmin(){
       const entered = prompt("Enter 4-digit admin PIN:");
@@ -1055,7 +1055,7 @@ function lockAdmin(isAuto=false){
       };
       saveAdminSession();
       isScorerDevice = true;
-      
+
       applyAdminUI();
       startOrResetAutoLockTimer();
       alert("Admin mode enabled");
@@ -1619,43 +1619,41 @@ function updateLastUpdated(){
     // ==========================================================
     // Admin UI apply (locks + spectator mode)
     // ==========================================================
-    function applyAdminUI(){
-      adminChipEl.textContent = adminSession.label || "Locked";
-      adminChipEl.classList.toggle("locked", !adminSession.unlocked);
+function applyAdminUI(){
+  adminChipEl.textContent = adminSession.label || "Locked";
+  adminChipEl.classList.toggle("locked", !adminSession.unlocked);
 
-      adminUnlockBtn.style.display = adminSession.unlocked ? "none" : "inline-block";
-      adminLockBtn.style.display   = adminSession.unlocked ? "inline-block" : "none";
+  adminUnlockBtn.style.display = adminSession.unlocked ? "none" : "inline-block";
+  adminLockBtn.style.display   = adminSession.unlocked ? "inline-block" : "none";
 
-      document.body.classList.toggle("adminUnlocked", adminSession.unlocked);
-if (adminSession.unlocked) {if (adminSession.un}
-  isScorerDevice = true;
+  document.body.classList.toggle("adminUnlocked", adminSession.unlocked);
 
-      const div = currentDivision();
-      const allowedHere = canEditDivision(div);
+  const div = currentDivision();
+  const allowedHere = canEditDivision(div);
 
-      const editableEls = [
-        timerStartBtn, timerResetBtn,
-        resetDivisionBtn, resetAllBtn,
-        homeNameEl, awayNameEl,
-        gamePicker1st, gamePicker2nd, gamePickerU16,
-        ...Object.values(scoreButtons)
-      ];
+  const editableEls = [
+    timerStartBtn, timerResetBtn,
+    resetDivisionBtn, resetAllBtn,
+    homeNameEl, awayNameEl,
+    gamePicker1st, gamePicker2nd, gamePickerU16,
+    ...Object.values(scoreButtons)
+  ];
 
-      for (const el of editableEls){
-        if (!el) continue;
-        if (allowedHere){
-          el.classList.remove("disabledLook");
-          if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = false;
-        } else {
-          el.classList.add("disabledLook");
-          if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = true;
-        }
-      }
-
-      // always allow viewing
-      divisionSelect.disabled = false;
-      divisionSelect.classList.remove("disabledLook");
+  for (const el of editableEls){
+    if (!el) continue;
+    if (allowedHere){
+      el.classList.remove("disabledLook");
+      if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = false;
+    } else {
+      el.classList.add("disabledLook");
+      if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = true;
     }
+  }
+
+  // always allow viewing
+  divisionSelect.disabled = false;
+  divisionSelect.classList.remove("disabledLook");
+}
 
     // ==========================================================
     // Scoring actions
