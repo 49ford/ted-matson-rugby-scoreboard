@@ -1856,6 +1856,14 @@ updateLastUpdated();
     }
 
     render();
+
+// Auto-refresh spectator view every 15 seconds
+setInterval(() => {
+  if (!document.body.classList.contains("adminUnlocked")) {
+    location.reload();
+  }
+}, 15000);
+
   </script>
 
 </body>
