@@ -399,11 +399,16 @@ function applyAdminUI(){
   adminChipEl.textContent = adminUnlocked ? "Admin" : "Locked";
   adminChipEl.classList.toggle("locked", !adminUnlocked);
 
-  const editable = adminUnlocked;
+  const editable = adminUnlocked; // ✅ no dependency on remoteState
 
-  [timerStartBtn, timerResetBtn, resetDivisionBtn, resetAllBtn].forEach(btn => btn.disabled = !editable);
-  [homeNameEl, awayNameEl].forEach(inp => inp.disabled = !editable);
-  Object.values(scoreBtns).forEach(btn => btn.disabled = !editable);
+  [timerStartBtn, timerResetBtn, resetDivisionBtn, resetAllBtn]
+    .forEach(btn => btn.disabled = !editable);
+
+  [homeNameEl, awayNameEl]
+    .forEach(inp => inp.disabled = !editable);
+
+  Object.values(scoreBtns)
+    .forEach(btn => btn.disabled = !editable);
 }
 
 /** Admin guard */
