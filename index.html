@@ -184,38 +184,26 @@
 
   <div class="footer">
     Live match scoreboard • View‑only for spectators • Updates by match officials
-    <span class="versionStamp">v2.0 – Sheets Sync</span>
+    <span class="versionStamp">v2.1 – Sheets Sync (anti-revert)</span>
   </div>
 
 <script>
-/** ============================
- * CONFIG: paste your Apps Script Web App URL here (ends with /exec)
- * ============================ */
+/** CONFIG: Apps Script Web App URL (must end with /exec) */
 const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwHZsj2Yssiizo36MNnwCOR-0t8Ug1mUjaB74-xGal5nEuXmjNgdZvV0aEvIqZxjJ5Z/exec";
+
 /** Polling interval (ms) */
 const POLL_MS = 3000;
 
 /** Admin session */
 let adminPin = null;
-let adminAllowed = [];  // returned by server? we’ll keep client-side minimal
 let adminUnlocked = false;
 
 /** Remote state cache */
 let remoteState = null;
 
-/** Fixtures (keep your full lists here if you want) */
-const fixtures = {
-  "1st XV": [
-    { id:"2026-06-13-1130", home:"Geelong Grammar 1st XV", away:"Scotch College 1st XV", venue:"Geelong Grammar School" },
-    { id:"2026-06-20-1130", home:"Trinity Grammar 1st XV", away:"Geelong Grammar 1st XV", venue:"Trinity Grammar" }
-  ],
-  "2nd XV": [
-    { id:"2026-06-13-1000", home:"Geelong Grammar 2nd XV", away:"Scotch College 2nd XV", venue:"Geelong Grammar School" }
-  ],
-  "U16": [
-    { id:"2026-06-13-0900", home:"Geelong Grammar U16", away:"Scotch College U16", venue:"Geelong Grammar School" }
-  ]
-};
+/** Anti-revert guard */
+let pendingWriteAtMs = 0;
+let writeInFlight = false;
 
 function $(id){ return document.getElementById(id); }
 
@@ -256,7 +244,7 @@ const scoreBtns = {
 
 function currentDivision(){ return divisionSelect.value; }
 
-/** ===== Timer compute (no drift) ===== */
+/** Timer compute (no drift): base + (now-start) if running */
 function computeDisplaySeconds(divData){
   const base = divData.timerBaseSeconds || 0;
   if (!divData.timerRunning) return base;
@@ -275,17 +263,59 @@ function periodLabel(sec){
   return "H1";
 }
 
-/** ===== Fetch state (spectators + admins) ===== */
-async function fetchState(){
-  const res = await fetch(GAS_WEBAPP_URL, { method:"GET", cache:"no-store" });
-  const data = await res.json();
+/** Accept server state safely (prevents rollback while writing) */
+function acceptServerState(data){
+  const incomingUpdatedAt = (data && data.updatedAtMs) ? data.updatedAtMs : 0;
+
+  // While a write is pending, never overwrite UI with older snapshots
+  if (writeInFlight && incomingUpdatedAt < pendingWriteAtMs) {
+    return;
+  }
+
   remoteState = data;
+
+  // If server has caught up, clear the lock
+  if (writeInFlight && incomingUpdatedAt >= pendingWriteAtMs) {
+    writeInFlight = false;
+    pendingWriteAtMs = 0;
+  }
+
   renderFromState();
 }
 
-/** ===== Push state (admins only) ===== */
+/** JSONP GET (bypasses CORS) */
+function fetchState(){
+  return new Promise((resolve, reject) => {
+    const cbName = "__sb_cb_" + Math.random().toString(36).slice(2);
+    const script = document.createElement("script");
+
+    window[cbName] = (data) => {
+      try {
+        acceptServerState(data);
+        resolve(data);
+      } catch (err) {
+        reject(err);
+      } finally {
+        delete window[cbName];
+        script.remove();
+      }
+    };
+
+    const sep = GAS_WEBAPP_URL.includes("?") ? "&" : "?";
+    script.src = `${GAS_WEBAPP_URL}${sep}callback=${cbName}&_=${Date.now()}`;
+    script.onerror = () => {
+      delete window[cbName];
+      script.remove();
+      reject(new Error("JSONP load failed"));
+    };
+
+    document.body.appendChild(script);
+  });
+}
+
+/** POST write (no-cors: confirm via next poll) */
 async function pushState(divisionHint=""){
-  if (!adminUnlocked || !adminPin) return;
+  if (!adminUnlocked || !adminPin || !remoteState) return;
 
   const payload = {
     pin: adminPin,
@@ -293,54 +323,74 @@ async function pushState(divisionHint=""){
     state: remoteState
   };
 
-  const res = await fetch(GAS_WEBAPP_URL, {
+  await fetch(GAS_WEBAPP_URL, {
     method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoid CORS preflight
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(payload)
   });
 
-  const out = await res.json();
-  if (!out.ok){
-    alert(out.error || "Update rejected");
-  }
+  // Safety release: never lock forever if Sheets is slow
+  setTimeout(() => {
+    writeInFlight = false;
+    pendingWriteAtMs = 0;
+  }, 2000);
 }
 
-/** ===== Render ===== */
+/** Mark local change as pending, render, then push */
+function commitLocalChange(div){
+  if (!remoteState) return;
+  remoteState.updatedAtMs = Date.now();
+  pendingWriteAtMs = remoteState.updatedAtMs;
+  writeInFlight = true;
+  renderFromState();
+  pushState(div);
+}
+
+/** Render full UI from remoteState */
 function renderFromState(){
   if (!remoteState || !remoteState.divisions) return;
 
   const div = currentDivision();
   const d = remoteState.divisions[div];
 
-  // scores & names
   homeScoreEl.textContent = d.home ?? 0;
   awayScoreEl.textContent = d.away ?? 0;
-  homeNameEl.value = d.homeName || "Home";
-  awayNameEl.value = d.awayName || "Away";
 
-  // now playing
-  const game = (fixtures[div] || []).find(g => g.id === d.selectedGameId) || null;
+  // only set input values if not actively typing (prevents cursor jumps)
+  if (document.activeElement !== homeNameEl) homeNameEl.value = d.homeName || "Home";
+  if (document.activeElement !== awayNameEl) awayNameEl.value = d.awayName || "Away";
+
   npDivisionEl.textContent = div;
   npFixtureEl.textContent = `${d.homeName || "Home"} vs ${d.awayName || "Away"}`;
-  npVenueEl.textContent = game ? game.venue : "Venue";
+  npVenueEl.textContent = d.venue || "Venue";
 
-  // timer
-  const sec = computeDisplaySeconds(d);
-  timerDisplayEl.textContent = formatTime(sec);
-  timerPeriodEl.textContent = periodLabel(sec);
+  renderTimerOnly();
 
-  // last updated
   if (remoteState.updatedAtMs){
     const t = new Date(remoteState.updatedAtMs);
     lastUpdatedEl.textContent = "Last updated: " + t.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+  } else {
+    lastUpdatedEl.textContent = "Last updated: --";
   }
-
-  // live badge
-  liveBadgeEl.classList.toggle("on", !!d.timerRunning);
 
   applyAdminUI();
 }
 
+/** Render timer only (smooth ticking between polls) */
+function renderTimerOnly(){
+  if (!remoteState || !remoteState.divisions) return;
+  const div = currentDivision();
+  const d = remoteState.divisions[div];
+
+  const sec = computeDisplaySeconds(d);
+  timerDisplayEl.textContent = formatTime(sec);
+  timerPeriodEl.textContent = periodLabel(sec);
+
+  liveBadgeEl.classList.toggle("on", !!d.timerRunning);
+}
+
+/** Admin UI enable/disable */
 function applyAdminUI(){
   document.body.classList.toggle("adminUnlocked", adminUnlocked);
 
@@ -349,71 +399,69 @@ function applyAdminUI(){
   adminChipEl.textContent = adminUnlocked ? "Admin" : "Locked";
   adminChipEl.classList.toggle("locked", !adminUnlocked);
 
-  // Lock editing unless admin unlocked
   const editable = adminUnlocked;
 
-  // Timer buttons & reset buttons
   [timerStartBtn, timerResetBtn, resetDivisionBtn, resetAllBtn].forEach(btn => btn.disabled = !editable);
-
-  // team name inputs
   [homeNameEl, awayNameEl].forEach(inp => inp.disabled = !editable);
-
-  // score buttons
   Object.values(scoreBtns).forEach(btn => btn.disabled = !editable);
 }
 
-/** ===== Admin actions ===== */
+/** Admin guard */
 function requireAdmin(){
   if (!adminUnlocked) { alert("Admin unlock required"); return false; }
   return true;
 }
 
+/** Actions */
 function adjustScore(side, delta){
   if (!requireAdmin()) return;
+  if (!remoteState) return;
+
   const div = currentDivision();
   const d = remoteState.divisions[div];
   d[side] = Math.max(0, (d[side]||0) + delta);
-  remoteState.updatedAtMs = Date.now();
-  renderFromState();
-  pushState(div);
+
+  commitLocalChange(div);
 }
 
 function toggleTimer(){
   if (!requireAdmin()) return;
+  if (!remoteState) return;
+
   const div = currentDivision();
   const d = remoteState.divisions[div];
   const now = Date.now();
 
   if (!d.timerRunning){
-    // start
     d.timerRunning = true;
     d.timerStartedAtMs = now;
   } else {
-    // pause: fold elapsed into base
     const elapsed = Math.max(0, Math.floor((now - (d.timerStartedAtMs||now))/1000));
     d.timerBaseSeconds = (d.timerBaseSeconds||0) + elapsed;
     d.timerRunning = false;
     d.timerStartedAtMs = 0;
   }
-  remoteState.updatedAtMs = Date.now();
-  renderFromState();
-  pushState(div);
+
+  commitLocalChange(div);
 }
 
 function resetTimer(){
   if (!requireAdmin()) return;
+  if (!remoteState) return;
+
   const div = currentDivision();
   const d = remoteState.divisions[div];
   d.timerBaseSeconds = 0;
   d.timerRunning = false;
   d.timerStartedAtMs = 0;
-  remoteState.updatedAtMs = Date.now();
-  renderFromState();
-  pushState(div);
+
+  commitLocalChange(div);
 }
 
 function resetDivision(){
   if (!requireAdmin()) return;
+  if (!remoteState) return;
+
   const div = currentDivision();
   const d = remoteState.divisions[div];
 
@@ -422,13 +470,13 @@ function resetDivision(){
   d.timerRunning = false;
   d.timerStartedAtMs = 0;
 
-  remoteState.updatedAtMs = Date.now();
-  renderFromState();
-  pushState(div);
+  commitLocalChange(div);
 }
 
 function resetAll(){
   if (!requireAdmin()) return;
+  if (!remoteState) return;
+
   Object.keys(remoteState.divisions).forEach(div => {
     const d = remoteState.divisions[div];
     d.home = 0; d.away = 0;
@@ -436,19 +484,17 @@ function resetAll(){
     d.timerRunning = false;
     d.timerStartedAtMs = 0;
   });
-  remoteState.updatedAtMs = Date.now();
-  renderFromState();
-  pushState(currentDivision());
+
+  commitLocalChange(currentDivision());
 }
 
-/** ===== Wire events ===== */
-adminUnlockBtn.addEventListener("click", async () => {
+/** Wire events */
+adminUnlockBtn.addEventListener("click", () => {
   const entered = prompt("Enter 4-digit admin PIN:");
   if (!entered) return;
   adminPin = entered.trim();
   adminUnlocked = true;
   applyAdminUI();
-  // Mark this device as scorer (no reload needed; this is polling-based)
 });
 
 adminLockBtn.addEventListener("click", () => {
@@ -462,41 +508,37 @@ timerResetBtn.addEventListener("click", resetTimer);
 resetDivisionBtn.addEventListener("click", resetDivision);
 resetAllBtn.addEventListener("click", resetAll);
 
-// scores
-scoreBtns.btnHomeTry.addEventListener("click", ()=>adjustScore("home", 5));
-scoreBtns.btnHomeConv.addEventListener("click", ()=>adjustScore("home", 2));
-scoreBtns.btnHomePen.addEventListener("click", ()=>adjustScore("home", 3));
-scoreBtns.btnHomeDrop.addEventListener("click", ()=>adjustScore("home", 3));
-scoreBtns.btnHomeMinus1.addEventListener("click", ()=>adjustScore("home",-1));
-scoreBtns.btnHomeMinus5.addEventListener("click", ()=>adjustScore("home",-5));
+scoreBtns.btnHomeTry.addEventListener("click", () => adjustScore("home", 5));
+scoreBtns.btnHomeConv.addEventListener("click", () => adjustScore("home", 2));
+scoreBtns.btnHomePen.addEventListener("click", () => adjustScore("home", 3));
+scoreBtns.btnHomeDrop.addEventListener("click", () => adjustScore("home", 3));
+scoreBtns.btnHomeMinus1.addEventListener("click", () => adjustScore("home", -1));
+scoreBtns.btnHomeMinus5.addEventListener("click", () => adjustScore("home", -5));
 
-scoreBtns.btnAwayTry.addEventListener("click", ()=>adjustScore("away", 5));
-scoreBtns.btnAwayConv.addEventListener("click", ()=>adjustScore("away", 2));
-scoreBtns.btnAwayPen.addEventListener("click", ()=>adjustScore("away", 3));
-scoreBtns.btnAwayDrop.addEventListener("click", ()=>adjustScore("away", 3));
-scoreBtns.btnAwayMinus1.addEventListener("click", ()=>adjustScore("away",-1));
-scoreBtns.btnAwayMinus5.addEventListener("click", ()=>adjustScore("away",-5));
+scoreBtns.btnAwayTry.addEventListener("click", () => adjustScore("away", 5));
+scoreBtns.btnAwayConv.addEventListener("click", () => adjustScore("away", 2));
+scoreBtns.btnAwayPen.addEventListener("click", () => adjustScore("away", 3));
+scoreBtns.btnAwayDrop.addEventListener("click", () => adjustScore("away", 3));
+scoreBtns.btnAwayMinus1.addEventListener("click", () => adjustScore("away", -1));
+scoreBtns.btnAwayMinus5.addEventListener("click", () => adjustScore("away", -5));
 
-// names
 homeNameEl.addEventListener("input", () => {
   if (!requireAdmin()) return;
+  if (!remoteState) return;
   const div = currentDivision();
   remoteState.divisions[div].homeName = homeNameEl.value || "Home";
-  remoteState.updatedAtMs = Date.now();
-  renderFromState();
-  pushState(div);
-});
-awayNameEl.addEventListener("input", () => {
-  if (!requireAdmin()) return;
-  const div = currentDivision();
-  remoteState.divisions[div].awayName = awayNameEl.value || "Away";
-  remoteState.updatedAtMs = Date.now();
-  renderFromState();
-  pushState(div);
+  commitLocalChange(div);
 });
 
-// division selection
-divisionSelect.addEventListener("change", renderFromState);
+awayNameEl.addEventListener("input", () => {
+  if (!requireAdmin()) return;
+  if (!remoteState) return;
+  const div = currentDivision();
+  remoteState.divisions[div].awayName = awayNameEl.value || "Away";
+  commitLocalChange(div);
+});
+
+divisionSelect.addEventListener("change", () => renderFromState());
 tabButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     divisionSelect.value = btn.dataset.div;
@@ -505,23 +547,23 @@ tabButtons.forEach(btn => {
   });
 });
 
-// TV mode
 tvModeBtn.addEventListener("click", () => {
   document.body.classList.toggle("tvMode");
   tvModeBtn.textContent = document.body.classList.contains("tvMode") ? "📺 Exit TV Mode" : "📺 TV Mode";
 });
 
-// Init
+/** Init */
 (async function init(){
-  // set initial tab highlight
   tabButtons.forEach(b => b.classList.toggle("active", b.dataset.div === currentDivision()));
-  await fetchState();
-  // poll
-  setInterval(fetchState, POLL_MS);
-  // local timer repaint (so seconds tick smoothly between polls)
-  setInterval(() => {
-    if (remoteState) renderFromState();
-  }, 1000);
+
+  // Initial fetch
+  try { await fetchState(); } catch(e){ /* ignore initial */ }
+
+  // Poll server
+  setInterval(() => { fetchState().catch(()=>{}); }, POLL_MS);
+
+  // Smooth timer tick
+  setInterval(() => { renderTimerOnly(); }, 1000);
 })();
 </script>
 </body>
