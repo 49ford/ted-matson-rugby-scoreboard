@@ -13,22 +13,21 @@
       --admin: rgba(201,162,77,0.20);
     }
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;text-align:center}
-    header{background:var(--panel);padding:18px 14px;border-bottom:1px solid var(--outline)}
-    h1{margin:0;font-size:32px;line-height:1.1}
-    .sub{margin-top:6px;font-size:14px;color:var(--muted)}
+    body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;text-align:center}
+    header{background:var(--panel);padding:18px 14px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--outline)}
+    header img{height:70px;width:auto;border-radius:12px;background:#fff;padding:6px}
+    .title{display:flex;flex-direction:column;align-items:center;gap:6px}
+    h1{margin:0;font-size:34px;line-height:1.1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+    .sub{font-size:14px;color:var(--muted)}
+    .liveBadge{display:none;font-size:12px;font-weight:900;letter-spacing:1px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(43,182,115,.18);color:#bff3db;text-transform:uppercase}
+    .liveBadge.on{display:inline-flex}
+
     .topbar{margin:12px auto 0;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:0 10px;align-items:center}
-    select,.smallbtn,input{
-      font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--outline);
-      outline:none;background:rgba(255,255,255,.06);color:#fff
-    }
+    select,.smallbtn{font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--outline);background:rgba(255,255,255,.06);color:#fff}
     select{min-width:240px}
     .smallbtn{cursor:pointer;font-weight:800}
-    .smallbtn.danger{background:rgba(139,30,45,.95);border-color:rgba(255,255,255,.12)}
-    .adminChip{
-      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(201,162,77,.35);
-      background:var(--admin);border-radius:999px;font-weight:900;letter-spacing:.4px;color:#ffe6ad;font-size:12px;text-transform:uppercase;user-select:none
-    }
+    .smallbtn.danger{background:rgba(139,30,45,.95)}
+    .adminChip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(201,162,77,.35);background:var(--admin);border-radius:999px;font-weight:900;letter-spacing:.4px;color:#ffe6ad;font-size:12px;text-transform:uppercase;user-select:none}
     .adminChip.locked{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:rgba(255,255,255,.75)}
 
     .divisionTabs{display:none;width:100%;max-width:520px;padding:0 10px;margin:12px auto 0}
@@ -44,7 +43,7 @@
     .timerBtn.primary{background:rgba(201,162,77,.20);border-color:rgba(201,162,77,.35);color:#ffe6ad}
     .timerBtn.danger{background:rgba(139,30,45,.22);border-color:rgba(139,30,45,.35);color:#ffd1d8}
 
-    .lastUpdated{font-size:12px;margin:6px auto 4px;color:rgba(255,255,255,.70)}
+    .lastUpdated{font-size:12px;margin:6px auto 4px;color:rgba(255,255,255,.65)}
     .nowPlaying{max-width:1060px;margin:8px auto 6px;padding:8px 12px;font-size:13px;font-weight:800;text-align:center;color:rgba(255,255,255,.9);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:999px}
     .nowPlaying .npDot{margin:0 6px;opacity:.6}
 
@@ -52,15 +51,29 @@
     .team{background:var(--card);padding:20px;border-radius:14px;width:330px;box-shadow:0 10px 25px rgba(0,0,0,.25);border:1px solid var(--outline)}
     .label{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.85;margin-top:6px}
     .teamname{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
-    .teamname input{width:240px;text-align:center;background:rgba(255,255,255,.10)}
+    .teamname input{font-size:18px;padding:10px 12px;border-radius:10px;border:1px solid var(--outline);width:220px;text-align:center;background:rgba(255,255,255,.10);color:#fff}
     .score{font-size:86px;margin:12px 0 16px;font-weight:900}
     .btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
     button.scoreBtn{font-size:18px;padding:12px 10px;border:1px solid rgba(255,255,255,.10);border-radius:8px;cursor:pointer;font-weight:900;color:#fff;background:rgba(255,255,255,.06)}
     .add{background:var(--accent);color:#0a1f33}
     .subtract{background:var(--danger);color:#fff}
 
+    .refreshHint{max-width:720px;margin:12px auto 0;padding:10px 14px;font-size:13px;line-height:1.35;color:rgba(255,255,255,.85);background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.18);border-radius:12px}
+    body.adminUnlocked .refreshHint{display:none!important}
+
     .footer{margin:18px 0 24px;font-size:13px;opacity:.78}
     .versionStamp{display:block;margin-top:6px;font-size:11px;opacity:.65;letter-spacing:.4px}
+
+    /* TV Mode */
+    body.tvMode header, body.tvMode .topbar, body.tvMode .divisionTabs,
+    body.tvMode .nowPlaying, body.tvMode .refreshHint, body.tvMode .footer{
+      display:none!important;
+    }
+    body.tvMode .lastUpdated{display:none!important}
+    body.tvMode::after{
+      content:"";position:fixed;inset:0;background:url("logo.png") no-repeat center;
+      background-size:280px auto;opacity:.06;pointer-events:none;z-index:0;
+    }
 
     @media (max-width:480px){
       #divisionSelect{display:none}
@@ -74,10 +87,17 @@
 
 <body>
   <header>
-    <h1>Ted Matson Rugby Scoreboard</h1>
-    <div class="sub">Multi-Division: 1st XV • 2nd XV • U16</div>
+    <img src="logo.png" alt="Ted Matson Club logo" />
+    <div class="title">
+      <h1>
+        Ted Matson Rugby Scoreboard
+        <span id="liveBadge" class="liveBadge">LIVE</span>
+      </h1>
+      <div class="sub">Multi-Division: 1st XV • 2nd XV • U16</div>
+    </div>
   </header>
 
+  <!-- Mobile tabs -->
   <div class="divisionTabs" aria-label="Division tabs">
     <div class="tabsInner">
       <button class="tabBtn" type="button" data-div="1st XV">1st XV</button>
@@ -86,6 +106,7 @@
     </div>
   </div>
 
+  <!-- Controls -->
   <div class="topbar">
     <select id="divisionSelect" aria-label="Select division">
       <option>1st XV</option>
@@ -93,11 +114,17 @@
       <option>U16</option>
     </select>
 
+    <button class="smallbtn" id="tvModeBtn" type="button">📺 TV Mode</button>
+
     <button class="smallbtn" id="adminUnlockBtn" type="button">🔒 Admin unlock</button>
     <button class="smallbtn danger" id="adminLockBtn" type="button" style="display:none;">Lock</button>
     <span id="adminChip" class="adminChip locked">Locked</span>
+
+    <button class="smallbtn" id="resetDivisionBtn" type="button">Reset this division</button>
+    <button class="smallbtn danger" id="resetAllBtn" type="button">Reset ALL divisions</button>
   </div>
 
+  <!-- Timer -->
   <div class="matchHud">
     <div class="timerWrap" id="timerWrap" aria-label="Match timer">
       <span id="timerPeriod" class="timerPeriod">H1</span>
@@ -107,24 +134,28 @@
     </div>
   </div>
 
-  <div class="lastUpdated" id="lastUpdated">Connecting…</div>
+  <div class="lastUpdated" id="lastUpdated">Last updated: --</div>
 
+  <!-- Now Playing -->
   <div class="nowPlaying" aria-label="Now playing">
     <span id="npDivision">1st XV</span><span class="npDot">•</span>
-    <span id="npFixture">Home vs Away</span><span class="npDot">•</span>
+    <span id="npFixture">Fixture</span><span class="npDot">•</span>
     <span id="npVenue">Venue</span>
   </div>
 
+  <!-- Scoreboard -->
   <div class="scoreboard">
     <div class="team">
       <div class="label">Home</div>
       <div class="teamname">
-        <input id="homeName" type="text" value="Home" />
+        <input id="homeName" type="text" value="Geelong Grammar 1st XV" />
       </div>
       <div id="homeScore" class="score">0</div>
       <div class="btnrow">
         <button class="scoreBtn add" id="btnHomeTry">+5 Try</button>
+        <button class="scoreBtn add" id="btnHomeConv">+2 Conversion</button>
         <button class="scoreBtn add" id="btnHomePen">+3 Penalty</button>
+        <button class="scoreBtn add" id="btnHomeDrop">+3 Drop Goal</button>
         <button class="scoreBtn subtract" id="btnHomeMinus1">-1</button>
         <button class="scoreBtn subtract" id="btnHomeMinus5">-5</button>
       </div>
@@ -133,36 +164,72 @@
     <div class="team">
       <div class="label">Away</div>
       <div class="teamname">
-        <input id="awayName" type="text" value="Away" />
+        <input id="awayName" type="text" value="Opposition" />
       </div>
       <div id="awayScore" class="score">0</div>
       <div class="btnrow">
         <button class="scoreBtn add" id="btnAwayTry">+5 Try</button>
+        <button class="scoreBtn add" id="btnAwayConv">+2 Conversion</button>
         <button class="scoreBtn add" id="btnAwayPen">+3 Penalty</button>
+        <button class="scoreBtn add" id="btnAwayDrop">+3 Drop Goal</button>
         <button class="scoreBtn subtract" id="btnAwayMinus1">-1</button>
         <button class="scoreBtn subtract" id="btnAwayMinus5">-5</button>
       </div>
     </div>
   </div>
 
+  <div class="refreshHint">
+    🔄 <strong>Live updates</strong>: This scoreboard polls the server automatically.
+  </div>
+
   <div class="footer">
     Live match scoreboard • View‑only for spectators • Updates by match officials
-    <span class="versionStamp">v2.2 – Sheets Sync (stable)</span>
+    <span class="versionStamp">v2.0 – Sheets Sync</span>
   </div>
 
 <script>
-/* ===== CONFIG ===== */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwHZsj2Yssiizo36MNnwCOR-0t8Ug1mUjaB74-xGal5nEuXmjNgdZvV0aEvIqZxjJ5Z/exec";
+/** ============================
+ * CONFIG: paste your Apps Script Web App URL here (ends with /exec)
+ * ============================ */
+const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwHZsj2Yssiizo36MNnwCOR-0t8Ug1mUjaB74-xGal5nEuXmjNgdZvV0aEvIqZxjJ5Z/exec";
+
+/** Polling interval (ms) */
 const POLL_MS = 3000;
 
-/* ===== UI ===== */
-const $ = (id) => document.getElementById(id);
+/** Admin session */
+let adminPin = null;
+let adminAllowed = [];  // returned by server? we’ll keep client-side minimal
+let adminUnlocked = false;
+
+/** Remote state cache */
+let remoteState = null;
+
+/** Fixtures (keep your full lists here if you want) */
+const fixtures = {
+  "1st XV": [
+    { id:"2026-06-13-1130", home:"Geelong Grammar 1st XV", away:"Scotch College 1st XV", venue:"Geelong Grammar School" },
+    { id:"2026-06-20-1130", home:"Trinity Grammar 1st XV", away:"Geelong Grammar 1st XV", venue:"Trinity Grammar" }
+  ],
+  "2nd XV": [
+    { id:"2026-06-13-1000", home:"Geelong Grammar 2nd XV", away:"Scotch College 2nd XV", venue:"Geelong Grammar School" }
+  ],
+  "U16": [
+    { id:"2026-06-13-0900", home:"Geelong Grammar U16", away:"Scotch College U16", venue:"Geelong Grammar School" }
+  ]
+};
+
+function $(id){ return document.getElementById(id); }
+
 const divisionSelect = $("divisionSelect");
 const tabButtons = Array.from(document.querySelectorAll(".tabBtn"));
 
+const tvModeBtn = $("tvModeBtn");
 const adminUnlockBtn = $("adminUnlockBtn");
-const adminLockBtn = $("adminLockBtn");
-const adminChipEl = $("adminChip");
+const adminLockBtn   = $("adminLockBtn");
+const adminChipEl    = $("adminChip");
+
+const resetDivisionBtn = $("resetDivisionBtn");
+const resetAllBtn      = $("resetAllBtn");
 
 const timerDisplayEl = $("timerDisplay");
 const timerPeriodEl  = $("timerPeriod");
@@ -179,181 +246,137 @@ const npFixtureEl  = $("npFixture");
 const npVenueEl    = $("npVenue");
 
 const lastUpdatedEl = $("lastUpdated");
+const liveBadgeEl = $("liveBadge");
 
 const scoreBtns = {
-  btnHomeTry: $("btnHomeTry"),
-  btnHomePen: $("btnHomePen"),
-  btnHomeMinus1: $("btnHomeMinus1"),
-  btnHomeMinus5: $("btnHomeMinus5"),
-  btnAwayTry: $("btnAwayTry"),
-  btnAwayPen: $("btnAwayPen"),
-  btnAwayMinus1: $("btnAwayMinus1"),
-  btnAwayMinus5: $("btnAwayMinus5")
+  btnHomeTry: $("btnHomeTry"), btnHomeConv: $("btnHomeConv"), btnHomePen: $("btnHomePen"), btnHomeDrop: $("btnHomeDrop"),
+  btnHomeMinus1: $("btnHomeMinus1"), btnHomeMinus5: $("btnHomeMinus5"),
+  btnAwayTry: $("btnAwayTry"), btnAwayConv: $("btnAwayConv"), btnAwayPen: $("btnAwayPen"), btnAwayDrop: $("btnAwayDrop"),
+  btnAwayMinus1: $("btnAwayMinus1"), btnAwayMinus5: $("btnAwayMinus5")
 };
 
 function currentDivision(){ return divisionSelect.value; }
 
-/* ===== SESSION ===== */
-let adminUnlocked = false;
-let adminPin = null;
-
-/* ===== REMOTE STATE ===== */
-let remoteState = null;
-
-/* Anti-revert guard */
-let writeInFlight = false;
-let pendingWriteAtMs = 0;
-
-/* ===== TIMER (no drift) ===== */
-function computeSeconds(d){
-  const base = d.timerBaseSeconds || 0;
-  if (!d.timerRunning) return base;
-  const started = d.timerStartedAtMs || 0;
-  return base + Math.max(0, Math.floor((Date.now() - started)/1000));
+/** ===== Timer compute (no drift) ===== */
+function computeDisplaySeconds(divData){
+  const base = divData.timerBaseSeconds || 0;
+  if (!divData.timerRunning) return base;
+  const started = divData.timerStartedAtMs || 0;
+  const now = Date.now();
+  return base + Math.max(0, Math.floor((now - started)/1000));
 }
 function formatTime(sec){
   const m = Math.floor(sec/60), s = sec%60;
-  return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
 }
 function periodLabel(sec){
-  const h=35*60, ft=70*60;
-  if (sec>=ft) return "FT";
-  if (sec>=h) return "H2";
+  const h = 35*60, ft = 70*60;
+  if (sec >= ft) return "FT";
+  if (sec >= h) return "H2";
   return "H1";
 }
 
-/* ===== JSONP GET ===== */
-function fetchState(){
-  return new Promise((resolve, reject) => {
-    const cb = "__sb_cb_" + Math.random().toString(36).slice(2);
-    const script = document.createElement("script");
-
-    window[cb] = (data) => {
-      try {
-        acceptServerState(data);
-        resolve(data);
-      } catch (e) {
-        reject(e);
-      } finally {
-        delete window[cb];
-        script.remove();
-      }
-    };
-
-    // IMPORTANT: real & characters, not &amp;
-    script.src = GAS_URL + "?callback=" + cb + "&_=" + Date.now();
-    script.onerror = () => {
-      delete window[cb];
-      script.remove();
-      reject(new Error("JSONP load failed"));
-    };
-
-    document.body.appendChild(script);
-  });
-}
-
-function acceptServerState(data){
-  if (!data || !data.divisions) return;
-  const incoming = data.updatedAtMs || 0;
-
-  // while pending write, ignore older snapshots
-  if (writeInFlight && incoming < pendingWriteAtMs) return;
-
+/** ===== Fetch state (spectators + admins) ===== */
+async function fetchState(){
+  const res = await fetch(GAS_WEBAPP_URL, { method:"GET", cache:"no-store" });
+  const data = await res.json();
   remoteState = data;
-
-  // if caught up, release
-  if (writeInFlight && incoming >= pendingWriteAtMs){
-    writeInFlight = false;
-    pendingWriteAtMs = 0;
-  }
-
-  render();
+  renderFromState();
 }
 
-/* ===== POST write (no-cors) ===== */
-function pushState(div){
-  if (!adminUnlocked || !adminPin || !remoteState) return;
+/** ===== Push state (admins only) ===== */
+async function pushState(divisionHint=""){
+  if (!adminUnlocked || !adminPin) return;
 
-  const payload = { pin: adminPin, division: div, state: remoteState };
+  const payload = {
+    pin: adminPin,
+    division: divisionHint || currentDivision(),
+    state: remoteState
+  };
 
-  fetch(GAS_URL, {
+  const res = await fetch(GAS_WEBAPP_URL, {
     method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type":"text/plain;charset=utf-8" },
+    headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoid CORS preflight
     body: JSON.stringify(payload)
   });
 
-  // safety release
-  setTimeout(() => { writeInFlight = false; pendingWriteAtMs = 0; }, 2000);
+  const out = await res.json();
+  if (!out.ok){
+    alert(out.error || "Update rejected");
+  }
 }
 
-/* ===== RENDER ===== */
-function render(){
+/** ===== Render ===== */
+function renderFromState(){
   if (!remoteState || !remoteState.divisions) return;
 
   const div = currentDivision();
   const d = remoteState.divisions[div];
 
+  // scores & names
   homeScoreEl.textContent = d.home ?? 0;
   awayScoreEl.textContent = d.away ?? 0;
+  homeNameEl.value = d.homeName || "Home";
+  awayNameEl.value = d.awayName || "Away";
 
-  if (document.activeElement !== homeNameEl) homeNameEl.value = d.homeName || "Home";
-  if (document.activeElement !== awayNameEl) awayNameEl.value = d.awayName || "Away";
-
-  const sec = computeSeconds(d);
-  timerDisplayEl.textContent = formatTime(sec);
-  timerPeriodEl.textContent  = periodLabel(sec);
-
+  // now playing
+  const game = (fixtures[div] || []).find(g => g.id === d.selectedGameId) || null;
   npDivisionEl.textContent = div;
-  npFixtureEl.textContent  = (d.homeName || "Home") + " vs " + (d.awayName || "Away");
-  npVenueEl.textContent    = d.venue || "Venue";
+  npFixtureEl.textContent = `${d.homeName || "Home"} vs ${d.awayName || "Away"}`;
+  npVenueEl.textContent = game ? game.venue : "Venue";
 
-  lastUpdatedEl.textContent = remoteState.updatedAtMs
-    ? ("Last updated: " + new Date(remoteState.updatedAtMs).toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}))
-    : "Connecting…";
+  // timer
+  const sec = computeDisplaySeconds(d);
+  timerDisplayEl.textContent = formatTime(sec);
+  timerPeriodEl.textContent = periodLabel(sec);
+
+  // last updated
+  if (remoteState.updatedAtMs){
+    const t = new Date(remoteState.updatedAtMs);
+    lastUpdatedEl.textContent = "Last updated: " + t.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+  }
+
+  // live badge
+  liveBadgeEl.classList.toggle("on", !!d.timerRunning);
 
   applyAdminUI();
 }
 
 function applyAdminUI(){
+  document.body.classList.toggle("adminUnlocked", adminUnlocked);
+
   adminUnlockBtn.style.display = adminUnlocked ? "none" : "inline-block";
   adminLockBtn.style.display   = adminUnlocked ? "inline-block" : "none";
   adminChipEl.textContent = adminUnlocked ? "Admin" : "Locked";
   adminChipEl.classList.toggle("locked", !adminUnlocked);
 
-  // DO NOT disable buttons based on remoteState; iPhone taps fail on disabled elements
+  // Lock editing unless admin unlocked
   const editable = adminUnlocked;
 
-  timerStartBtn.disabled = !editable;
-  timerResetBtn.disabled = !editable;
-  homeNameEl.disabled = !editable;
-  awayNameEl.disabled = !editable;
+  // Timer buttons & reset buttons
+  [timerStartBtn, timerResetBtn, resetDivisionBtn, resetAllBtn].forEach(btn => btn.disabled = !editable);
 
-  Object.values(scoreBtns).forEach(b => b.disabled = !editable);
+  // team name inputs
+  [homeNameEl, awayNameEl].forEach(inp => inp.disabled = !editable);
+
+  // score buttons
+  Object.values(scoreBtns).forEach(btn => btn.disabled = !editable);
 }
 
-/* ===== Admin actions ===== */
+/** ===== Admin actions ===== */
 function requireAdmin(){
-  if (!adminUnlocked){ alert("Admin unlock required"); return false; }
-  if (!remoteState){ alert("Still connecting… try again in 2–3 seconds."); return false; }
+  if (!adminUnlocked) { alert("Admin unlock required"); return false; }
   return true;
 }
 
-function commitLocalChange(div){
-  if (!remoteState) return;
-  remoteState.updatedAtMs = Date.now();
-  pendingWriteAtMs = remoteState.updatedAtMs;
-  writeInFlight = true;
-  render();
-  pushState(div);
-}
-
-function addPoints(side, delta){
+function adjustScore(side, delta){
   if (!requireAdmin()) return;
   const div = currentDivision();
   const d = remoteState.divisions[div];
   d[side] = Math.max(0, (d[side]||0) + delta);
-  commitLocalChange(div);
+  remoteState.updatedAtMs = Date.now();
+  renderFromState();
+  pushState(div);
 }
 
 function toggleTimer(){
@@ -363,15 +386,19 @@ function toggleTimer(){
   const now = Date.now();
 
   if (!d.timerRunning){
+    // start
     d.timerRunning = true;
     d.timerStartedAtMs = now;
   } else {
+    // pause: fold elapsed into base
     const elapsed = Math.max(0, Math.floor((now - (d.timerStartedAtMs||now))/1000));
     d.timerBaseSeconds = (d.timerBaseSeconds||0) + elapsed;
     d.timerRunning = false;
     d.timerStartedAtMs = 0;
   }
-  commitLocalChange(div);
+  remoteState.updatedAtMs = Date.now();
+  renderFromState();
+  pushState(div);
 }
 
 function resetTimer(){
@@ -381,16 +408,48 @@ function resetTimer(){
   d.timerBaseSeconds = 0;
   d.timerRunning = false;
   d.timerStartedAtMs = 0;
-  commitLocalChange(div);
+  remoteState.updatedAtMs = Date.now();
+  renderFromState();
+  pushState(div);
 }
 
-/* ===== Wire UI ===== */
-adminUnlockBtn.addEventListener("click", () => {
+function resetDivision(){
+  if (!requireAdmin()) return;
+  const div = currentDivision();
+  const d = remoteState.divisions[div];
+
+  d.home = 0; d.away = 0;
+  d.timerBaseSeconds = 0;
+  d.timerRunning = false;
+  d.timerStartedAtMs = 0;
+
+  remoteState.updatedAtMs = Date.now();
+  renderFromState();
+  pushState(div);
+}
+
+function resetAll(){
+  if (!requireAdmin()) return;
+  Object.keys(remoteState.divisions).forEach(div => {
+    const d = remoteState.divisions[div];
+    d.home = 0; d.away = 0;
+    d.timerBaseSeconds = 0;
+    d.timerRunning = false;
+    d.timerStartedAtMs = 0;
+  });
+  remoteState.updatedAtMs = Date.now();
+  renderFromState();
+  pushState(currentDivision());
+}
+
+/** ===== Wire events ===== */
+adminUnlockBtn.addEventListener("click", async () => {
   const entered = prompt("Enter 4-digit admin PIN:");
   if (!entered) return;
   adminPin = entered.trim();
   adminUnlocked = true;
   applyAdminUI();
+  // Mark this device as scorer (no reload needed; this is polling-based)
 });
 
 adminLockBtn.addEventListener("click", () => {
@@ -401,46 +460,69 @@ adminLockBtn.addEventListener("click", () => {
 
 timerStartBtn.addEventListener("click", toggleTimer);
 timerResetBtn.addEventListener("click", resetTimer);
+resetDivisionBtn.addEventListener("click", resetDivision);
+resetAllBtn.addEventListener("click", resetAll);
 
-scoreBtns.btnHomeTry.addEventListener("click", () => addPoints("home", 5));
-scoreBtns.btnHomePen.addEventListener("click", () => addPoints("home", 3));
-scoreBtns.btnHomeMinus1.addEventListener("click", () => addPoints("home", -1));
-scoreBtns.btnHomeMinus5.addEventListener("click", () => addPoints("home", -5));
+// scores
+scoreBtns.btnHomeTry.addEventListener("click", ()=>adjustScore("home", 5));
+scoreBtns.btnHomeConv.addEventListener("click", ()=>adjustScore("home", 2));
+scoreBtns.btnHomePen.addEventListener("click", ()=>adjustScore("home", 3));
+scoreBtns.btnHomeDrop.addEventListener("click", ()=>adjustScore("home", 3));
+scoreBtns.btnHomeMinus1.addEventListener("click", ()=>adjustScore("home",-1));
+scoreBtns.btnHomeMinus5.addEventListener("click", ()=>adjustScore("home",-5));
 
-scoreBtns.btnAwayTry.addEventListener("click", () => addPoints("away", 5));
-scoreBtns.btnAwayPen.addEventListener("click", () => addPoints("away", 3));
-scoreBtns.btnAwayMinus1.addEventListener("click", () => addPoints("away", -1));
-scoreBtns.btnAwayMinus5.addEventListener("click", () => addPoints("away", -5));
+scoreBtns.btnAwayTry.addEventListener("click", ()=>adjustScore("away", 5));
+scoreBtns.btnAwayConv.addEventListener("click", ()=>adjustScore("away", 2));
+scoreBtns.btnAwayPen.addEventListener("click", ()=>adjustScore("away", 3));
+scoreBtns.btnAwayDrop.addEventListener("click", ()=>adjustScore("away", 3));
+scoreBtns.btnAwayMinus1.addEventListener("click", ()=>adjustScore("away",-1));
+scoreBtns.btnAwayMinus5.addEventListener("click", ()=>adjustScore("away",-5));
 
+// names
 homeNameEl.addEventListener("input", () => {
   if (!requireAdmin()) return;
   const div = currentDivision();
   remoteState.divisions[div].homeName = homeNameEl.value || "Home";
-  commitLocalChange(div);
+  remoteState.updatedAtMs = Date.now();
+  renderFromState();
+  pushState(div);
 });
 awayNameEl.addEventListener("input", () => {
   if (!requireAdmin()) return;
   const div = currentDivision();
   remoteState.divisions[div].awayName = awayNameEl.value || "Away";
-  commitLocalChange(div);
+  remoteState.updatedAtMs = Date.now();
+  renderFromState();
+  pushState(div);
 });
 
-divisionSelect.addEventListener("change", render);
-
+// division selection
+divisionSelect.addEventListener("change", renderFromState);
 tabButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     divisionSelect.value = btn.dataset.div;
     tabButtons.forEach(b => b.classList.toggle("active", b === btn));
-    render();
+    renderFromState();
   });
 });
 
-/* ===== Init ===== */
+// TV mode
+tvModeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("tvMode");
+  tvModeBtn.textContent = document.body.classList.contains("tvMode") ? "📺 Exit TV Mode" : "📺 TV Mode";
+});
+
+// Init
 (async function init(){
+  // set initial tab highlight
   tabButtons.forEach(b => b.classList.toggle("active", b.dataset.div === currentDivision()));
-  try { await fetchState(); } catch(e) {}
-  setInterval(() => { fetchState().catch(()=>{}); }, POLL_MS);
-  setInterval(() => { if (remoteState) render(); }, 1000);
+  await fetchState();
+  // poll
+  setInterval(fetchState, POLL_MS);
+  // local timer repaint (so seconds tick smoothly between polls)
+  setInterval(() => {
+    if (remoteState) renderFromState();
+  }, 1000);
 })();
 </script>
 </body>
