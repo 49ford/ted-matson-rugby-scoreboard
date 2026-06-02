@@ -277,11 +277,34 @@ function periodLabel(sec){
 }
 
 /** ===== Fetch state (spectators + admins) ===== */
-async function fetchState(){
-  const res = await fetch(GAS_WEBAPP_URL, { method:"GET", cache:"no-store" });
-  const data = await res.json();
-  remoteState = data;
-  renderFromState();
+function fetchState(){
+  return new Promise((resolve, reject) => {
+    const cbName = "__sb_cb_" + Math.random().toString(36).slice(2);
+    const script = document.createElement("script");
+
+    window[cbName] = (data) => {
+      try {
+        acceptServerState(data);
+        resolve(data);
+      } catch (err) {
+        reject(err);
+      } finally {
+        delete window[cbName];
+        script.remove();
+      }
+    };
+
+    // IMPORTANT: real & not &amp;
+    script.src = GAS_WEBAPP_URL + "?callback=" + cbName + "&_=" + Date.now();
+
+    script.onerror = () => {
+      delete window[cbName];
+      script.remove();
+      reject(new Error("JSONP load failed"));
+    };
+
+    document.body.appendChild(script);
+  });
 }
 
 /** ===== Push state (admins only) ===== */
@@ -361,6 +384,25 @@ function applyAdminUI(){
 
   // score buttons
   Object.values(scoreBtns).forEach(btn => btn.disabled = !editable);
+}
+
+  function acceptServerState(data){
+  if (!data) return;
+
+  const incomingUpdatedAt = data.updatedAtMs || 0;
+
+  // If an admin write just happened, don't overwrite with older data
+  if (writeInFlight && incomingUpdatedAt < pendingWriteAtMs) return;
+
+  remoteState = data;
+
+  // If server caught up, release write lock
+  if (writeInFlight && incomingUpdatedAt >= pendingWriteAtMs){
+    writeInFlight = false;
+    pendingWriteAtMs = 0;
+  }
+
+  renderFromState();
 }
 
 /** ===== Admin actions ===== */
