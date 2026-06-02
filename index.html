@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ted Matson Rugby Scoreboard</title>
-
   <style>
     :root{
       --bg: #0a1f33;
@@ -15,19 +14,15 @@
       --text: #ffffff;
       --muted: rgba(255,255,255,0.72);
       --outline: rgba(255,255,255,0.14);
-
       /* outcomes */
       --win: #2bb673;
       --draw: #c9a24d;
       --loss: #8b1e2d;
       --tbc: rgba(255,255,255,0.35);
-
       /* admin */
       --admin: rgba(201,162,77,0.20);
     }
-
     *{ box-sizing: border-box; }
-
     body{
       background: var(--bg);
       color: var(--text);
@@ -36,7 +31,6 @@
       margin: 0;
       padding: 0;
     }
-
     header{
       background: var(--panel);
       padding: 18px 14px;
@@ -47,7 +41,6 @@
       flex-wrap: wrap;
       border-bottom: 1px solid var(--outline);
     }
-
     header img{
       height: 70px;
       width: auto;
@@ -55,14 +48,12 @@
       background: #ffffff;
       padding: 6px;
     }
-
     header .title{
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
     }
-
     h1{
       margin: 0;
       font-size: 34px;
@@ -74,11 +65,7 @@
       justify-content: center;
       flex-wrap: wrap;
     }
-
-    .sub{
-      font-size: 14px;
-      color: var(--muted);
-    }
+    .sub{ font-size: 14px; color: var(--muted); }
 
     /* LIVE badge */
     .liveBadge{
@@ -111,7 +98,6 @@
       padding: 0 10px;
       align-items: center;
     }
-
     select, .smallbtn{
       font-size: 16px;
       padding: 10px 12px;
@@ -121,9 +107,7 @@
       background: rgba(255,255,255,0.06);
       color: white;
     }
-
     select{ min-width: 240px; }
-
     .smallbtn{
       cursor: pointer;
       font-weight: 700;
@@ -156,9 +140,7 @@
       color: rgba(255,255,255,0.75);
     }
 
-    /* =========================
-       Mobile division tabs
-       ========================= */
+    /* Mobile division tabs */
     .divisionTabs{
       display: none;
       width: 100%;
@@ -189,9 +171,7 @@
       color: #ffe6ad;
     }
 
-    /* =========================
-       Match HUD (timer)
-       ========================= */
+    /* Match HUD */
     .matchHud{
       margin: 12px auto 0;
       padding: 0 10px;
@@ -201,7 +181,6 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-
     .timerWrap{
       display: inline-flex;
       align-items: center;
@@ -251,9 +230,7 @@
       color: #ffd1d8;
     }
 
-    /* =========================
-       Now Playing strip
-       ========================= */
+    /* Now Playing strip */
     .nowPlaying{
       max-width: 1060px;
       margin: 8px auto 6px;
@@ -267,14 +244,9 @@
       border-radius: 999px;
       letter-spacing: 0.2px;
     }
-    .nowPlaying .npDot{
-      margin: 0 6px;
-      opacity: 0.6;
-    }
+    .nowPlaying .npDot{ margin: 0 6px; opacity: 0.6; }
 
-    /* =========================
-       Scoreboard (sticky)
-       ========================= */
+    /* Scoreboard */
     .scoreboard{
       display: flex;
       justify-content: center;
@@ -283,7 +255,6 @@
       padding: 10px 10px 10px;
       flex-wrap: wrap;
       max-width: 1060px;
-
       position: sticky;
       top: 0;
       z-index: 5;
@@ -291,7 +262,6 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.22);
       border-bottom: 1px solid var(--outline);
     }
-
     .team{
       background: var(--card);
       padding: 20px;
@@ -301,13 +271,10 @@
       border: 1px solid var(--outline);
       position: relative;
     }
-
-    /* Leading highlight */
     .team.leading{
       border-color: rgba(201,162,77,0.55);
       box-shadow: 0 0 0 2px rgba(201,162,77,0.22), 0 12px 28px rgba(0,0,0,0.28);
     }
-
     .label{
       font-size: 12px;
       letter-spacing: 1px;
@@ -315,7 +282,6 @@
       opacity: 0.85;
       margin-top: 6px;
     }
-
     .teamname{
       display: flex;
       justify-content: center;
@@ -324,7 +290,6 @@
       flex-wrap: wrap;
       margin-top: 6px;
     }
-
     .teamname input{
       font-size: 18px;
       padding: 10px 12px;
@@ -335,8 +300,6 @@
       background: rgba(255,255,255,0.10);
       color: white;
     }
-
-    /* TV mode team name text */
     .teamNameText{
       display: none;
       font-weight: 900;
@@ -347,29 +310,24 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .score{
       font-size: 86px;
       margin: 12px 0 16px;
       font-weight: 900;
       letter-spacing: 1px;
     }
-
-    /* Score flash */
     .score.flash{ animation: scoreFlash 550ms ease-out 1; }
     @keyframes scoreFlash{
       0%   { transform: scale(1); filter: brightness(1); }
       35%  { transform: scale(1.06); filter: brightness(1.35); }
       100% { transform: scale(1); filter: brightness(1); }
     }
-
     .btnrow{
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 10px;
     }
-
     button.scoreBtn{
       font-size: 18px;
       padding: 12px 10px;
@@ -383,7 +341,6 @@
     .add{ background: var(--accent); color: #0a1f33; }
     .subtract{ background: var(--danger); color: white; }
 
-    /* Logo badge */
     .logoBadge{
       width: 34px;
       height: 34px;
@@ -408,9 +365,6 @@
       color: white;
     }
 
-    /* =========================
-       Viewer refresh guidance
-       ========================= */
     .refreshHint{
       max-width: 720px;
       margin: 12px auto 0;
@@ -426,9 +380,6 @@
     body.tvMode .refreshHint{ display: none !important; }
     body.adminUnlocked .refreshHint{ display: none !important; }
 
-    /* =========================
-       Results section
-       ========================= */
     .section{
       max-width: 1060px;
       margin: 18px auto 28px;
@@ -453,7 +404,6 @@
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 12px;
     }
-
     .resultCard{
       background: rgba(255,255,255,0.06);
       border: 1px solid var(--outline);
@@ -466,7 +416,6 @@
       background: var(--outline);
       margin: 10px 0;
     }
-
     .resultCard.win  { border-left: 6px solid var(--win); }
     .resultCard.loss { border-left: 6px solid var(--loss); }
     .resultCard.draw { border-left: 6px solid var(--draw); box-shadow: 0 0 0 2px rgba(201,162,77,0.22); }
@@ -546,7 +495,6 @@
     }
     .dash{ opacity: 0.75; font-weight: 900; }
 
-    /* Footer + version stamp */
     .footer{
       margin: 18px 0 24px;
       font-size: 13px;
@@ -561,9 +509,6 @@
       letter-spacing: 0.4px;
     }
 
-    /* =========================
-       QR SHARE SECTION (bottom)
-       ========================= */
     .qrSection{
       max-width: 720px;
       margin: 70px auto 50px;
@@ -605,9 +550,6 @@
       color: rgba(255,255,255,0.65);
     }
 
-    /* =========================
-       Disabled look
-       ========================= */
     .disabledLook{
       opacity: 0.45 !important;
       filter: grayscale(0.25);
@@ -615,9 +557,6 @@
       pointer-events: none !important;
     }
 
-    /* =========================
-       TV MODE (everything except score + timer)
-       ========================= */
     body.tvMode header,
     body.tvMode .topbar,
     body.tvMode .divisionTabs,
@@ -628,14 +567,7 @@
     body.tvMode .qrSection{
       display: none !important;
     }
-
-
-/* hide "Last updated" in TV Mode */
-body.tvMode .lastUpdated{
-  display: none !important;
-}
-
-    /* TV mode watermark (subtle crest) */
+    body.tvMode .lastUpdated{ display: none !important; }
     body.tvMode::after{
       content: "";
       position: fixed;
@@ -646,8 +578,6 @@ body.tvMode .lastUpdated{
       pointer-events: none;
       z-index: 0;
     }
-
-    /* TV mode: show name text instead of inputs; hide buttons */
     body.tvMode .teamname input,
     body.tvMode .btnrow,
     body.tvMode #adminUnlockBtn,
@@ -659,146 +589,108 @@ body.tvMode .lastUpdated{
     body.tvMode select{
       display: none !important;
     }
-    body.tvMode .teamNameText{
-      display: inline-block !important;
-    }
+    body.tvMode .teamNameText{ display: inline-block !important; }
     body.tvMode #timerStartBtn,
     body.tvMode #timerResetBtn,
-    body.tvMode #liveBadge{
-      display: none !important;
+    body.tvMode #liveBadge{ display: none !important; }
+
+    @media (max-width: 480px){
+      body.tvMode #tvModeBtn{
+        display: inline-block !important;
+        position: fixed;
+        bottom: 12px;
+        right: 12px;
+        z-index: 9999;
+      }
     }
-    /* Mobile-only TV mode exit button */
-@media (max-width: 480px){
-  body.tvMode #tvModeBtn{
-    display: inline-block !important;
-    position: fixed;
-    bottom: 12px;
-    right: 12px;
-    z-index: 9999;
-  }
-}
+    @media (max-width: 480px){
+      .scoreboard{ position: static; }
+      .qrImage{ width: 240px; }
+      #adminUnlockBtn{ display: inline-block !important; pointer-events: auto !important; opacity: 1 !important; }
+      body:not(.adminUnlocked) .topbar{ display: flex !important; justify-content: center; }
+      body:not(.adminUnlocked) #adminUnlockBtn{ display: inline-block !important; pointer-events: auto !important; opacity: 1 !important; }
+      header{ padding: 12px 10px; gap: 10px; }
+      header img{ height: 54px; border-radius: 10px; padding: 5px; }
+      h1{ font-size: 24px; gap: 8px; }
+      .sub{ font-size: 12px; }
+      #divisionSelect{ display: none; }
+      .divisionTabs{ display: block; }
+      .topbar{ margin-top: 10px; gap: 8px; }
+      .matchHud{ margin-top: 10px; gap: 8px; }
+      .nowPlaying{ font-size: 12px; padding: 7px 10px; }
+      .team{ width: 100%; padding: 16px; }
+      .teamname input{ width: 200px; padding: 9px 10px; font-size: 16px; }
+      .score{ font-size: 72px; margin: 10px 0 12px; }
+      .scoreboard{ gap: 12px; margin-top: 10px; padding-top: 8px; }
+      body:not(.adminUnlocked) #adminLockBtn,
+      body:not(.adminUnlocked) #resetDivisionBtn,
+      body:not(.adminUnlocked) #resetAllBtn,
+      body:not(.adminUnlocked) #gamePicker1st,
+      body:not(.adminUnlocked) #gamePicker2nd,
+      body:not(.adminUnlocked) #gamePickerU16,
+      body:not(.adminUnlocked) #timerStartBtn,
+      body:not(.adminUnlocked) #timerResetBtn,
+      body:not(.adminUnlocked) #adminChip{
+        display: none !important;
+      }
+      .timerWrap{ padding: 6px 10px; gap: 8px; }
+      .timerDisplay{ font-size: 16px; min-width: 80px; }
+      .timerPeriod{ font-size: 11px; padding: 4px 7px; }
+      .refreshHint{ font-size: 12px; margin-top: 10px; }
 
-    /* =========================
-       iPhone portrait optimisations
-       ========================= */
-@media (max-width: 480px){
-  .scoreboard{
-    position: static;
-  }
-}
-  .qrImage{
-    width: 240px;
-  }
-  /* ALWAYS show Admin Unlock on mobile */
-#adminUnlockBtn{
-  display: inline-block !important;
-  pointer-events: auto !important;
-  opacity: 1 !important;
-}
-/* Mobile: ensure Admin Unlock is visible and tappable */
-body:not(.adminUnlocked) .topbar{
-  display: flex !important;
-  justify-content: center;
-}
-
-body:not(.adminUnlocked) #adminUnlockBtn{
-  display: inline-block !important;
-  pointer-events: auto !important;
-  opacity: 1 !important;
-}
-
-  header{ padding: 12px 10px; gap: 10px; }
-  header img{ height: 54px; border-radius: 10px; padding: 5px; }
-  h1{ font-size: 24px; gap: 8px; }
-  .sub{ font-size: 12px; }
-
-  /* show tabs, hide select */
-  #divisionSelect{ display: none; }
-  .divisionTabs{ display: block; }
-
-  .topbar{ margin-top: 10px; gap: 8px; }
-  .matchHud{ margin-top: 10px; gap: 8px; }
-  .nowPlaying{ font-size: 12px; padding: 7px 10px; }
-
-  .team{ width: 100%; padding: 16px; }
-  .teamname input{ width: 200px; padding: 9px 10px; font-size: 16px; }
-  .score{ font-size: 72px; margin: 10px 0 12px; }
-  .scoreboard{ gap: 12px; margin-top: 10px; padding-top: 8px; }
-
-  /* Spectator view (locked): hide admin clutter */
-  body:not(.adminUnlocked) #adminLockBtn,
-  body:not(.adminUnlocked) #resetDivisionBtn,
-  body:not(.adminUnlocked) #resetAllBtn,
-  body:not(.adminUnlocked) #gamePicker1st,
-  body:not(.adminUnlocked) #gamePicker2nd,
-  body:not(.adminUnlocked) #gamePickerU16,
-  body:not(.adminUnlocked) #timerStartBtn,
-  body:not(.adminUnlocked) #timerResetBtn,
-  body:not(.adminUnlocked) #adminChip{
-    display: none !important;
-  }
-
-  .timerWrap{ padding: 6px 10px; gap: 8px; }
-  .timerDisplay{ font-size: 16px; min-width: 80px; }
-  .timerPeriod{ font-size: 11px; padding: 4px 7px; }
-  .refreshHint{ font-size: 12px; margin-top: 10px; }
-
-    /* =========================
-       Add to Home Screen banner (iOS)
-       ========================= */
-    .a2hs{
-      position: fixed;
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      z-index: 9999;
-      display: none;
-      background: rgba(16, 42, 68, 0.95);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 14px;
-      padding: 12px 12px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-      text-align: left;
-    }
-    .a2hsRow{
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-    .a2hsTitle{
-      font-weight: 900;
-      letter-spacing: 0.2px;
-      margin: 0 0 4px 0;
-      font-size: 14px;
-      color: white;
-    }
-    .a2hsText{
-      margin: 0;
-      font-size: 13px;
-      color: rgba(255,255,255,0.82);
-      line-height: 1.35;
-    }
-    .a2hsBtn{
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      font-weight: 900;
-      border-radius: 12px;
-      padding: 8px 10px;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-    .a2hsHint{
-      font-size: 12px;
-      color: rgba(255,255,255,0.75);
-      margin-top: 6px;
+      .a2hs{
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 9999;
+        display: none;
+        background: rgba(16, 42, 68, 0.95);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 14px;
+        padding: 12px 12px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+        text-align: left;
+      }
+      .a2hsRow{
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .a2hsTitle{
+        font-weight: 900;
+        letter-spacing: 0.2px;
+        margin: 0 0 4px 0;
+        font-size: 14px;
+        color: white;
+      }
+      .a2hsText{
+        margin: 0;
+        font-size: 13px;
+        color: rgba(255,255,255,0.82);
+        line-height: 1.35;
+      }
+      .a2hsBtn{
+        border: 1px solid rgba(255,255,255,0.18);
+        background: rgba(255,255,255,0.08);
+        color: white;
+        font-weight: 900;
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+      .a2hsHint{
+        font-size: 12px;
+        color: rgba(255,255,255,0.75);
+        margin-top: 6px;
+      }
     }
   </style>
 </head>
 
 <body>
-
   <header>
     <img src="logo.png" alt="Ted Matson Club logo" />
     <div class="title">
@@ -850,9 +742,7 @@ body:not(.adminUnlocked) #adminUnlockBtn{
       <button class="timerBtn danger" id="timerResetBtn" type="button">Reset</button>
     </div>
 
-   <div class="lastUpdated" id="lastUpdated">
-  Last updated: 11:42
-</div> 
+    <div class="lastUpdated" id="lastUpdated">Last updated: --</div>
   </div>
 
   <!-- NOW PLAYING -->
@@ -905,8 +795,8 @@ body:not(.adminUnlocked) #adminUnlockBtn{
 
   <!-- Viewer refresh guidance -->
   <div class="refreshHint" id="refreshHint">
-    🔄 <strong>Scores update when you refresh.</strong><br />
-    Pull down on your screen to see the latest score and match time.
+    🔄 <strong>Scores update automatically.</strong><br />
+    Live scores are updated by match officials.
   </div>
 
   <!-- RESULTS -->
@@ -920,10 +810,10 @@ body:not(.adminUnlocked) #adminUnlockBtn{
     <div id="resultsGrid" class="resultsGrid" aria-live="polite"></div>
   </div>
 
-  <!-- FOOTER (with version stamp) -->
+  <!-- FOOTER -->
   <div class="footer">
     Live match scoreboard • View‑only for spectators • Updates by match officials
-    <span class="versionStamp">v1.6 – MATCH DAY LOCK (31 May)</span>
+    <span class="versionStamp">v2.0 – SHEETS SYNC BASELINE (02 Jun)</span>
   </div>
 
   <!-- QR SHARE (bottom of page) -->
@@ -963,917 +853,961 @@ body:not(.adminUnlocked) #adminUnlockBtn{
 
 <script>
   // ==========================================================
-  // v1.6 – MATCH DAY LOCK
-  // Do not modify without version bump
-  // ==========================================================    
-    const ADMIN_PINS = {
-      "1111": ["1st XV"],
-      "2222": ["2nd XV"],
-      "1616": ["U16"],
-      "9999": ["*"]   // power user (all divisions)
-    };
+  // v2.0 – SHEETS SYNC BASELINE (built from v1.6 UI)
+  // ==========================================================
 
-    // Session-only unlock
-    const ADMIN_SESSION_KEY = "tm_admin_session_v1";
+  // ---------- Apps Script Web App URL (must support JSONP doGet + POST doPost) ----------
+  const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwHZsj2Yssiizo36MNnwCOR-0t8Ug1mUjaB74-xGal5nEuXmjNgdZvV0aEvIqZxjJ5Z/exec";
 
-    // Auto-lock after inactivity
-    const AUTO_LOCK_MS = 10 * 60 * 1000;
-    let autoLockTimer = null;
+  // Poll frequency for spectators (ms)
+  const SYNC_POLL_MS = 5000;
 
-    let isScorerDevice = false;
+  // Throttle for admin push (ms)
+  const SYNC_PUSH_THROTTLE_MS = 3000;
 
-    function clearAutoLockTimer(){
-      if (autoLockTimer) { clearTimeout(autoLockTimer); autoLockTimer = null; }
-    }
-    function startOrResetAutoLockTimer(){
-      clearAutoLockTimer();
-      if (!adminSession.unlocked) return;
-      autoLockTimer = setTimeout(() => lockAdmin(true), AUTO_LOCK_MS);
-    }
-    ["click","touchstart","keydown","mousemove","scroll"].forEach(evt => {
-      window.addEventListener(evt, () => {
-        if (adminSession.unlocked) startOrResetAutoLockTimer();
-      }, { passive: true });
-    });
+  // Sync state
+  let lastRemoteUpdatedAtMs = 0;
+  let pendingWriteAtMs = 0;
+  let writeInFlight = false;
+  let lastPushAtMs = 0;
+  let pushTimer = null;
 
-    let adminSession = loadAdminSession();
+  // Store admin pin for server writes (set during unlockAdmin)
+  let adminPinForSync = null;
 
-    function loadAdminSession(){
-      try {
-        const raw = sessionStorage.getItem(ADMIN_SESSION_KEY);
-        if (!raw) return { unlocked:false, allowed:[], label:"Locked" };
-        const parsed = JSON.parse(raw);
-        if (!parsed || typeof parsed.unlocked !== "boolean" || !Array.isArray(parsed.allowed)) {
-          return { unlocked:false, allowed:[], label:"Locked" };
-        }
-        return parsed;
-      } catch {
+  // ==========================================================
+  // ADMIN PINS + PERMISSIONS (unchanged)
+  // ==========================================================
+  const ADMIN_PINS = {
+    "1111": ["1st XV"],
+    "2222": ["2nd XV"],
+    "1616": ["U16"],
+    "9999": ["*"]
+  };
+
+  const ADMIN_SESSION_KEY = "tm_admin_session_v1";
+  const AUTO_LOCK_MS = 10 * 60 * 1000;
+  let autoLockTimer = null;
+
+  // scorer device flag
+  let isScorerDevice = false;
+
+  function clearAutoLockTimer(){
+    if (autoLockTimer) { clearTimeout(autoLockTimer); autoLockTimer = null; }
+  }
+  function startOrResetAutoLockTimer(){
+    clearAutoLockTimer();
+    if (!adminSession.unlocked) return;
+    autoLockTimer = setTimeout(() => lockAdmin(true), AUTO_LOCK_MS);
+  }
+  ["click","touchstart","keydown","mousemove","scroll"].forEach(evt => {
+    window.addEventListener(evt, () => {
+      if (adminSession.unlocked) startOrResetAutoLockTimer();
+    }, { passive: true });
+  });
+
+  let adminSession = loadAdminSession();
+
+  function loadAdminSession(){
+    try {
+      const raw = sessionStorage.getItem(ADMIN_SESSION_KEY);
+      if (!raw) return { unlocked:false, allowed:[], label:"Locked" };
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed.unlocked !== "boolean" || !Array.isArray(parsed.allowed)) {
         return { unlocked:false, allowed:[], label:"Locked" };
       }
+      return parsed;
+    } catch {
+      return { unlocked:false, allowed:[], label:"Locked" };
     }
-    function saveAdminSession(){
-      sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(adminSession));
+  }
+  function saveAdminSession(){
+    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(adminSession));
+  }
+
+  function canEditDivision(div){
+    if (!adminSession.unlocked) return false;
+    if (adminSession.allowed.includes("*")) return true;
+    return adminSession.allowed.includes(div);
+  }
+
+  function requireAdminForCurrentDivision(){
+    const div = currentDivision();
+    if (!canEditDivision(div)) {
+      alert("Admin access required for this division.");
+      return false;
     }
+    return true;
+  }
 
-    function canEditDivision(div){
-      if (!adminSession.unlocked) return false;
-      if (adminSession.allowed.includes("*")) return true;
-      return adminSession.allowed.includes(div);
-    }
+  function lockAdmin(isAuto = false){
+    adminSession = { unlocked:false, allowed:[], label:"Locked" };
+    adminPinForSync = null;
+    saveAdminSession();
+    clearAutoLockTimer();
+    saveState();
+    applyAdminUI();
+    if (isAuto) alert("Admin auto-locked after 10 minutes of inactivity.");
+    else alert("Admin locked");
+  }
 
-    function requireAdminForCurrentDivision(){
-      const div = currentDivision();
-      if (!canEditDivision(div)) {
-        alert("Admin access required for this division.");
-        return false;
-      }
-      return true;
-    }
+  function unlockAdmin(){
+    const entered = prompt("Enter 4-digit admin PIN:");
+    if (!entered) return;
 
-function lockAdmin(isAuto = false){
-  // Do NOT stop timers – match clock continues
-  adminSession = { unlocked:false, allowed:[], label:"Locked" };
-  saveAdminSession();
-  clearAutoLockTimer();
-  saveState();
-  applyAdminUI();
+    const pin = entered.trim();
+    const allowed = ADMIN_PINS[pin];
+    if (!allowed) { alert("Incorrect PIN"); return; }
 
-  if (isAuto) alert("Admin auto-locked after 10 minutes of inactivity.");
-  else alert("Admin locked");
-}
-    function unlockAdmin(){
-      const entered = prompt("Enter 4-digit admin PIN:");
-      if (!entered) return;
-
-      const pin = entered.trim();
-      const allowed = ADMIN_PINS[pin];
-      if (!allowed) { alert("Incorrect PIN"); return; }
-
-      adminSession = {
-        unlocked: true,
-        allowed,
-        label: allowed.includes("*") ? "Admin: ALL" : `Admin: ${allowed.join(", ")}`
-      };
-      
-      saveAdminSession();
-      isScorerDevice = true;
-      applyAdminUI();
-      startOrResetAutoLockTimer();
-      alert("Admin mode enabled");
-    }
-
-    // ==========================================================
-    // LOGOS
-    // ==========================================================
-    const teamLogoMap = {
-      "Geelong Grammar": "Geelong.webp",
-      "Geelong Grammar School": "Geelong.webp",
-      "Geelong Grammar 1st XV": "Geelong.webp",
-      "Geelong Grammar 2nd XV": "Geelong.webp",
-      "Geelong Grammar U16": "Geelong.webp",
-
-      "Brighton Grammar": "Brighton.webp",
-      "Brighton Grammar School": "Brighton.webp",
-      "Brighton Grammar 1st XV": "Brighton.webp",
-      "Brighton Grammar 2nd XV": "Brighton.webp",
-      "Brighton Grammar U16": "Brighton.webp",
-
-      "Melbourne Grammar": "Melbourne.webp",
-      "Melbourne Grammar School": "Melbourne.webp",
-      "Melbourne Grammar 1st XV": "Melbourne.webp",
-      "Melbourne Grammar 2nd XV": "Melbourne.webp",
-      "Melbourne Grammar U16": "Melbourne.webp",
-
-      "Haileybury": "Haileybury.webp",
-      "Haileybury College": "Haileybury.webp",
-      "Haileybury College 1st XV": "Haileybury.webp",
-      "Haileybury College U16": "Haileybury.webp",
-
-      "St Kevin's College": "StKevins.webp",
-      "St Kevins College": "StKevins.webp",
-      "St Kevin's College GOLD": "StKevins.webp",
-      "St Kevin's College GOLD 2nd XV": "StKevins.webp",
-      "St Kevin's College GREEN": "StKevins.webp",
-      "St Kevin's College GREEN 2nd XV": "StKevins.webp",
-      "St Kevin's College 2nd XV": "StKevins.webp",
-      "St Kevin's College U16": "StKevins.webp",
-
-      "Xavier College": "Xavier.webp",
-      "Xavier College 1st XV": "Xavier.webp",
-      "Xavier College 2nd XV": "Xavier.webp",
-      "Xavier College U16": "Xavier.webp",
-
-      "Scotch College": "Scotch.webp",
-      "Scotch College 1st XV": "Scotch.webp",
-      "Scotch College 2nd XV": "Scotch.webp",
-      "Scotch College U16": "Scotch.webp",
-
-      "Trinity Grammar": "Trinity.webp",
-      "Trinity Grammar 1st XV": "Trinity.webp",
-
-      "Melbourne High School": "MelbourneHigh.webp",
-      "Melbourne High School 2nd XV": "MelbourneHigh.webp",
-
-      "St Patrick's College": "StPatricks.webp",
-      "St Patricks College": "StPatricks.webp",
-      "St Patrick's College 2nd XV": "StPatricks.webp",
-      "St Patricks College 2nd XV": "StPatricks.webp",
-      "St Patrick's College U16": "StPatricks.webp",
-      "St Patricks College U16": "StPatricks.webp"
+    adminSession = {
+      unlocked: true,
+      allowed,
+      label: allowed.includes("*") ? "Admin: ALL" : `Admin: ${allowed.join(", ")}`
     };
 
-    function normalizeTeamName(name){
-      return (name || "")
-        .toLowerCase()
-        .replace(/\b1st\s*xv\b/g, "")
-        .replace(/\b2nd\s*xv\b/g, "")
-        .replace(/\bxv\b/g, "")
-        .replace(/[^a-z0-9 ]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
+    adminPinForSync = pin;     // <-- sync pin stored here
+    saveAdminSession();
+    isScorerDevice = true;     // scorer device opt-out of pulls
+    applyAdminUI();
+    startOrResetAutoLockTimer();
+    alert("Admin mode enabled");
+  }
+
+  // ==========================================================
+  // LOGOS (unchanged)
+  // ==========================================================
+  const teamLogoMap = {
+    "Geelong Grammar": "Geelong.webp",
+    "Geelong Grammar School": "Geelong.webp",
+    "Geelong Grammar 1st XV": "Geelong.webp",
+    "Geelong Grammar 2nd XV": "Geelong.webp",
+    "Geelong Grammar U16": "Geelong.webp",
+    "Brighton Grammar": "Brighton.webp",
+    "Brighton Grammar School": "Brighton.webp",
+    "Brighton Grammar 1st XV": "Brighton.webp",
+    "Brighton Grammar 2nd XV": "Brighton.webp",
+    "Brighton Grammar U16": "Brighton.webp",
+    "Melbourne Grammar": "Melbourne.webp",
+    "Melbourne Grammar School": "Melbourne.webp",
+    "Melbourne Grammar 1st XV": "Melbourne.webp",
+    "Melbourne Grammar 2nd XV": "Melbourne.webp",
+    "Melbourne Grammar U16": "Melbourne.webp",
+    "Haileybury": "Haileybury.webp",
+    "Haileybury College": "Haileybury.webp",
+    "Haileybury College 1st XV": "Haileybury.webp",
+    "Haileybury College U16": "Haileybury.webp",
+    "St Kevin's College": "StKevins.webp",
+    "St Kevins College": "StKevins.webp",
+    "St Kevin's College GOLD": "StKevins.webp",
+    "St Kevin's College GOLD 2nd XV": "StKevins.webp",
+    "St Kevin's College GREEN": "StKevins.webp",
+    "St Kevin's College GREEN 2nd XV": "StKevins.webp",
+    "St Kevin's College 2nd XV": "StKevins.webp",
+    "St Kevin's College U16": "StKevins.webp",
+    "Xavier College": "Xavier.webp",
+    "Xavier College 1st XV": "Xavier.webp",
+    "Xavier College 2nd XV": "Xavier.webp",
+    "Xavier College U16": "Xavier.webp",
+    "Scotch College": "Scotch.webp",
+    "Scotch College 1st XV": "Scotch.webp",
+    "Scotch College 2nd XV": "Scotch.webp",
+    "Scotch College U16": "Scotch.webp",
+    "Trinity Grammar": "Trinity.webp",
+    "Trinity Grammar 1st XV": "Trinity.webp",
+    "Melbourne High School": "MelbourneHigh.webp",
+    "Melbourne High School 2nd XV": "MelbourneHigh.webp",
+    "St Patrick's College": "StPatricks.webp",
+    "St Patricks College": "StPatricks.webp",
+    "St Patrick's College 2nd XV": "StPatricks.webp",
+    "St Patricks College 2nd XV": "StPatricks.webp",
+    "St Patrick's College U16": "StPatricks.webp",
+    "St Patricks College U16": "StPatricks.webp"
+  };
+
+  function normalizeTeamName(name){
+    return (name || "")
+      .toLowerCase()
+      .replace(/\b1st\s*xv\b/g, "")
+      .replace(/\b2nd\s*xv\b/g, "")
+      .replace(/\bxv\b/g, "")
+      .replace(/[^a-z0-9 ]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  const normalizedLogoMap = (() => {
+    const map = {};
+    for (const [key, val] of Object.entries(teamLogoMap)){
+      map[normalizeTeamName(key)] = val;
     }
-
-    const normalizedLogoMap = (() => {
-      const map = {};
-      for (const [key, val] of Object.entries(teamLogoMap)){
-        map[normalizeTeamName(key)] = val;
-      }
-      return map;
-    })();
-
-    function initialsFor(teamName){
-      return (teamName || "")
-        .replace(/[^A-Za-z0-9 ]/g, "")
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean)
-        .slice(0,3)
-        .map(w => w[0].toUpperCase())
-        .join("");
-    }
-
-    function logoSrcFor(teamName){
-      return normalizedLogoMap[normalizeTeamName(teamName)] || "";
-    }
-
-    function setLogoBadge(badgeEl, teamName){
-      const src = logoSrcFor(teamName);
-      badgeEl.innerHTML = src
-        ? `<img src="${src}" alt="${teamName} logo">`
-        : `<span class="initials">${initialsFor(teamName)}</span>`;
-    }
-
-    // ==========================================================
-    // FIXTURES
-    // ==========================================================
-    const firstXVGames = [
-      { id: "2026-06-13-1130", label: "Sat, Jun 13, 2026 — vs Scotch College (Home)", home: "Geelong Grammar 1st XV", away: "Scotch College 1st XV", venue: "Geelong Grammar School" },
-      { id: "2026-06-20-1130", label: "Sat, Jun 20, 2026 — at Trinity Grammar (Away)", home: "Trinity Grammar 1st XV", away: "Geelong Grammar 1st XV", venue: "Trinity Grammar" }
-    ];
-
-    const secondXVGames = [
-      { id: "2026-06-13-1000", label: "Sat, Jun 13, 2026 — vs Scotch College (Home)", home: "Geelong Grammar 2nd XV", away: "Scotch College 2nd XV", venue: "Geelong Grammar School" },
-      { id: "2026-06-20-1000", label: "Sat, Jun 20, 2026 — at Melbourne High (Away)", home: "Melbourne High School 2nd XV", away: "Geelong Grammar 2nd XV", venue: "Fawkner Park" },
-      { id: "2026-07-25-1000", label: "Sat, Jul 25, 2026 — vs Melbourne Grammar (Home)", home: "Geelong Grammar 2nd XV", away: "Melbourne Grammar 2nd XV", venue: "Geelong Grammar School" },
-      { id: "2026-08-01-1000", label: "Sat, Aug 1, 2026 — vs St Kevin's GOLD (Home)", home: "Geelong Grammar 2nd XV", away: "St Kevin's College GOLD 2nd XV", venue: "Geelong Grammar School" }
-    ];
-
-    const u16Games = [
-      { id: "2026-06-13-0900", label: "Sat, Jun 13, 2026 — vs Scotch College (Home)", home: "Geelong Grammar U16", away: "Scotch College U16", venue: "Geelong Grammar School" }
-    ];
-
-    // ==========================================================
-    // RESULTS (hard-coded)
-    // ==========================================================
-    const manualPast1stXV = [
-      { date: "2026-05-23", dateLabel: "Sat, May 23, 2026, 10:30 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 1st XV", away: "Melbourne Grammar 1st XV", homeScore: 0, awayScore: 47, note: "Round 4" },
-      { date: "2026-05-16", dateLabel: "Sat, May 16, 2026, 11:30 AM", venue: "Brighton Grammar School", home: "Brighton Grammar 1st XV", away: "Geelong Grammar 1st XV", homeScore: 61, awayScore: 7, note: "Round 3" },
-      { date: "2026-05-09", dateLabel: "Sat, May 9, 2026, 11:30 AM", venue: "Xavier College - Wakefield Oval", home: "Xavier College 1st XV", away: "Geelong Grammar 1st XV", homeScore: 17, awayScore: 10, note: "Round 2" },
-      { date: "2026-05-02", dateLabel: "Sat, May 2, 2026, 11:30 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 1st XV", away: "Haileybury College 1st XV", homeScore: 5, awayScore: 50, note: "Round 1" }
-    ];
-
-    const manualPast2ndXV = [
-      { date: "2026-05-23", dateLabel: "Sat, May 23, 2026, 10:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 2nd XV", away: "St Kevin's College GREEN 2nd XV", homeScore: null, awayScore: null, note: "Round 4 (score not shown)" },
-      { date: "2026-05-16", dateLabel: "Sat, May 16, 2026, 10:00 AM", venue: "Brighton Grammar School", home: "Brighton Grammar 2nd XV", away: "Geelong Grammar 2nd XV", homeScore: 26, awayScore: 12, note: "Round 3" },
-      { date: "2026-05-09", dateLabel: "Sat, May 9, 2026, 10:00 AM", venue: "Xavier College - Wakefield Oval", home: "Xavier College 2nd XV", away: "Geelong Grammar 2nd XV", homeScore: 0, awayScore: 30, note: "Round 2" },
-      { date: "2026-05-02", dateLabel: "Sat, May 2, 2026, 10:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 2nd XV", away: "St Patrick's College 2nd XV", homeScore: 21, awayScore: 5, note: "Round 1" }
-    ];
-
-    const manualPastU16 = [
-      { date: "2026-05-30", dateLabel: "Sat, May 30, 2026, 9:00 AM", venue: "St Kevin's College, Toorak", home: "St Kevin's College U16", away: "Geelong Grammar U16", homeScore: 50, awayScore: 14, note: "Round 5" },
-      { date: "2026-05-23", dateLabel: "Sat, May 23, 2026, 9:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar U16", away: "Melbourne Grammar U16", homeScore: 0, awayScore: 24, note: "Round 4" },
-      { date: "2026-05-16", dateLabel: "Sat, May 16, 2026, 9:00 AM", venue: "Brighton Grammar School", home: "Brighton Grammar U16", away: "Geelong Grammar U16", homeScore: 19, awayScore: 29, note: "Round 3" },
-      { date: "2026-05-09", dateLabel: "Sat, May 9, 2026, 9:00 AM", venue: "Xavier College - Wakefield Oval", home: "Xavier College U16", away: "Geelong Grammar U16", homeScore: 17, awayScore: 17, note: "Round 2" },
-      { date: "2026-05-02", dateLabel: "Sat, May 2, 2026, 9:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar U16", away: "Haileybury College U16", homeScore: 27, awayScore: 10, note: "Round 1" }
-    ];
-
-    // ==========================================================
-    // DOM HOOKS
-    // ==========================================================
-    const divisionSelect = document.getElementById("divisionSelect");
-    const tabButtons = Array.from(document.querySelectorAll(".tabBtn"));
-
-    const gamePicker1st = document.getElementById("gamePicker1st");
-    const gamePicker2nd = document.getElementById("gamePicker2nd");
-    const gamePickerU16 = document.getElementById("gamePickerU16");
-
-    const homeTeamCard = document.getElementById("homeTeamCard");
-    const awayTeamCard = document.getElementById("awayTeamCard");
-
-    const homeScoreEl = document.getElementById("homeScore");
-    const awayScoreEl = document.getElementById("awayScore");
-
-    const homeNameEl = document.getElementById("homeName");
-    const awayNameEl = document.getElementById("awayName");
-    const homeNameText = document.getElementById("homeNameText");
-    const awayNameText = document.getElementById("awayNameText");
-
-    const homeLogoBadge = document.getElementById("homeLogoBadge");
-    const awayLogoBadge = document.getElementById("awayLogoBadge");
-
-    const liveBadgeEl = document.getElementById("liveBadge");
-
-    const timerWrapEl = document.getElementById("timerWrap");
-    const timerDisplayEl = document.getElementById("timerDisplay");
-    const timerPeriodEl  = document.getElementById("timerPeriod");
-    const timerStartBtn  = document.getElementById("timerStartBtn");
-    const timerResetBtn  = document.getElementById("timerResetBtn");
-
-    const tvModeBtn = document.getElementById("tvModeBtn");
-
-    const adminUnlockBtn = document.getElementById("adminUnlockBtn");
-    const adminLockBtn   = document.getElementById("adminLockBtn");
-    const adminChipEl    = document.getElementById("adminChip");
-
-    const resetDivisionBtn = document.getElementById("resetDivisionBtn");
-    const resetAllBtn      = document.getElementById("resetAllBtn");
-
-    const resultsGridEl = document.getElementById("resultsGrid");
-    const resultsTitleEl = document.getElementById("resultsTitle");
-    const resultsNoteEl  = document.getElementById("resultsNote");
-
-    // Now Playing DOM
-    const npDivisionEl = document.getElementById("npDivision");
-    const npFixtureEl  = document.getElementById("npFixture");
-    const npVenueEl    = document.getElementById("npVenue");
-
-    // A2HS DOM
-    const a2hsBanner = document.getElementById("a2hsBanner");
-    const a2hsCloseBtn = document.getElementById("a2hsCloseBtn");
-
-    const scoreButtons = {
-      btnHomeTry: document.getElementById("btnHomeTry"),
-      btnHomeConv: document.getElementById("btnHomeConv"),
-      btnHomePen: document.getElementById("btnHomePen"),
-      btnHomeDrop: document.getElementById("btnHomeDrop"),
-      btnHomeMinus1: document.getElementById("btnHomeMinus1"),
-      btnHomeMinus5: document.getElementById("btnHomeMinus5"),
-      btnAwayTry: document.getElementById("btnAwayTry"),
-      btnAwayConv: document.getElementById("btnAwayConv"),
-      btnAwayPen: document.getElementById("btnAwayPen"),
-      btnAwayDrop: document.getElementById("btnAwayDrop"),
-      btnAwayMinus1: document.getElementById("btnAwayMinus1"),
-      btnAwayMinus5: document.getElementById("btnAwayMinus5")
-    };
-
-    // ==========================================================
-    // STATE (scores + timers are local to the scorer device)
-    // ==========================================================
-    const STORAGE_KEY = "tm_scoreboard_state_v1";
-
-    const defaultState = {
-      "1st XV": { home: 0, away: 0, homeName: "Geelong Grammar 1st XV", awayName: "Opposition", selectedGameId: firstXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false },
-      "2nd XV": { home: 0, away: 0, homeName: "Geelong Grammar 2nd XV", awayName: "Opposition", selectedGameId: secondXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false },
-      "U16":    { home: 0, away: 0, homeName: "Geelong Grammar U16",    awayName: "Opposition", selectedGameId: u16Games[0]?.id || "", timerSeconds: 0, timerRunning: false }
-    };
-
-    function loadState(){
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return structuredClone(defaultState);
-      try {
-        const parsed = JSON.parse(saved);
-        for (const div of Object.keys(defaultState)){
-          if (!parsed[div]) parsed[div] = structuredClone(defaultState[div]);
-          if (typeof parsed[div].timerSeconds !== "number") parsed[div].timerSeconds = 0;
-          if (typeof parsed[div].timerRunning !== "boolean") parsed[div].timerRunning = false;
-        }
-        return parsed;
-      } catch {
-        return structuredClone(defaultState);
-      }
-    }
-
-    let state = loadState();
-    function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-    function currentDivision(){ return divisionSelect.value; }
-
-    // ==========================================================
-    // Utility: escape html for injected strings
-    // ==========================================================
-    function escapeHtml(s){
-      return (s ?? "").toString().replace(/[<>&"]/g, c => ({
-        "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;"
-      }[c]));
-    }
-
-    // ==========================================================
-    // LIVE badge pulses on score changes
-    // ==========================================================
-    let livePulseTimeout = null;
-
-    function setLiveBadge(on, pulse){
-      liveBadgeEl.classList.toggle("on", !!on);
-      liveBadgeEl.classList.toggle("pulse", !!pulse);
-    }
-
-    function pulseLiveBadge(){
-      setLiveBadge(true, true);
-      clearTimeout(livePulseTimeout);
-      livePulseTimeout = setTimeout(() => {
-        const div = currentDivision();
-        if (state[div].timerRunning) setLiveBadge(true, false);
-        else setLiveBadge(false, false);
-      }, 3000);
-    }
-
-    // ==========================================================
-    // TIMER (increments all running divisions)
-    // ==========================================================
-    function formatTime(sec){
-      const m = Math.floor(sec / 60);
-      const s = sec % 60;
-      return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-    }
-
-    function periodLabel(sec){
-      const h = 35 * 60;
-      const ft = 70 * 60;
-      if (sec >= ft) return "FT";
-      if (sec >= h) return "H2";
-      return "H1";
-    }
-    // Utility helpers (formatting, UI stamps, etc)
-
-function updateLastUpdated(){
-  const now = new Date();
-  const time = now.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-  document.getElementById("lastUpdated").textContent =
-    `Last updated: ${time}`;
-}
-// LIVE badge helpers
-
-    function renderTimer(){
-      const div = currentDivision();
-      const d = state[div];
-      timerDisplayEl.textContent = formatTime(d.timerSeconds);
-      timerPeriodEl.textContent = periodLabel(d.timerSeconds);
-      timerStartBtn.textContent = d.timerRunning ? "Pause" : "Start";
-      if (d.timerRunning) setLiveBadge(true, false);
-      else if (!liveBadgeEl.classList.contains("pulse")) setLiveBadge(false, false);
-    }
-
-    setInterval(() => {
-      let changed = false;
-      for (const div of Object.keys(state)){
-        if (state[div].timerRunning){
-          state[div].timerSeconds += 1;
-          changed = true;
-        }
-      }
-      if (changed){
-        saveState();
-        renderTimer();
-        const div = currentDivision();
-        if (state[div].timerRunning) setLiveBadge(true, false);
-      }
-    }, 1000);
-
-    // ==========================================================
-    // RESULTS rendering
-    // ==========================================================
-    function extractRoundCode(note){
-      const m = /round\s*(\d+)/i.exec(note || "");
-      return m ? `R${m[1]}` : "R?";
-    }
-
-    function extractNoteExtra(note){
-      if (!note) return "";
-      let extra = note.replace(/round\s*\d+/i, "").trim();
-      extra = extra.replace(/^[\-\u2013•:()]+/g, "").trim();
-      extra = extra.replace(/[()]+/g, "").trim();
-      return extra;
-    }
-
-    function outcomeForGeelong(game){
-      const homeIsGG = (game.home || "").toLowerCase().includes("geelong grammar");
-      const awayIsGG = (game.away || "").toLowerCase().includes("geelong grammar");
-
-      if (game.homeScore == null || game.awayScore == null){
-        return { code:"TBC", cls:"tbc", homeIsGG, awayIsGG };
-      }
-
-      const ggScore = homeIsGG ? game.homeScore : game.awayScore;
-      const oppScore = homeIsGG ? game.awayScore : game.homeScore;
-
-      if (ggScore === oppScore) return { code:"D", cls:"draw", homeIsGG, awayIsGG };
-      return ggScore > oppScore
-        ? { code:"W", cls:"win", homeIsGG, awayIsGG }
-        : { code:"L", cls:"loss", homeIsGG, awayIsGG };
-    }
-
-    function logoHtml(teamName){
-      const src = logoSrcFor(teamName);
-      if (src) return `<span class="logoBadge"><img src="${src}" alt="${escapeHtml(teamName)} logo"></span>`;
-      return `<span class="logoBadge"><span class="initials">${initialsFor(teamName)}</span></span>`;
-    }
-
-    function scorePillHtml(g, homeIsGG, awayIsGG){
-      const hs = (g.homeScore == null) ? "—" : String(g.homeScore);
-      const as = (g.awayScore == null) ? "—" : String(g.awayScore);
-      const homeCls = homeIsGG ? "scorePart gg" : "scorePart";
-      const awayCls = awayIsGG ? "scorePart gg" : "scorePart";
-      return `
-        <span class="${homeCls}">${escapeHtml(hs)}</span>
-        <span class="dash">-</span>
-        <span class="${awayCls}">${escapeHtml(as)}</span>
-      `;
-    }
-
-    function renderResults(games){
-      resultsGridEl.innerHTML = "";
-      const sorted = [...games].sort((a,b) => (a.date < b.date ? 1 : -1));
-
-      for (const g of sorted){
-        const roundCode = extractRoundCode(g.note);
-        const extra = extractNoteExtra(g.note);
-        const outcome = outcomeForGeelong(g);
-
-        const card = document.createElement("div");
-        card.className = `resultCard ${outcome.cls}`;
-
-        card.innerHTML = `
-          <div class="meta">
-            <span class="roundBadge">${escapeHtml(roundCode)}</span>
-            <span class="outcomeBadge ${escapeHtml(outcome.cls)}">${escapeHtml(outcome.code)}</span>
-            <span>${escapeHtml(g.dateLabel)} • ${escapeHtml(g.venue)}</span>
-            ${extra ? `<span class="metaExtra">• ${escapeHtml(extra)}</span>` : ""}
-          </div>
-          <div class="divider"></div>
-          <div class="matchRow">
-            <div class="teamSide">
-              ${logoHtml(g.home)}
-              <div class="teamText" title="${escapeHtml(g.home)}">${escapeHtml(g.home)}</div>
-            </div>
-            <div class="scorePill">${scorePillHtml(g, outcome.homeIsGG, outcome.awayIsGG)}</div>
-            <div class="teamSide right">
-              <div class="teamText" title="${escapeHtml(g.away)}">${escapeHtml(g.away)}</div>
-              ${logoHtml(g.away)}
-            </div>
-          </div>
-        `;
-        resultsGridEl.appendChild(card);
-      }
-    }
-
-    function updateResultsForDivision(div){
-      if (div === "U16"){
-        resultsTitleEl.textContent = "U16 — Previous Games (This Season)";
-        resultsNoteEl.textContent  = "2026 VSRU — U16A Results";
-        renderResults(manualPastU16);
-      } else if (div === "2nd XV"){
-        resultsTitleEl.textContent = "2nd XV — Previous Games (This Season)";
-        resultsNoteEl.textContent  = "2026 VSRU — 2nd XV Results";
-        renderResults(manualPast2ndXV);
-      } else {
-        resultsTitleEl.textContent = "1st XV — Previous Games (This Season)";
-        resultsNoteEl.textContent  = "2026 VSRU — 1st XV Results";
-        renderResults(manualPast1stXV);
-      }
-    }
-
-    // ==========================================================
-    // FIXTURE pickers
-    // ==========================================================
-    function populatePicker(selectEl, games){
-      selectEl.innerHTML = "";
-      for (const g of games){
-        const opt = document.createElement("option");
-        opt.value = g.id;
-        opt.textContent = g.label;
-        selectEl.appendChild(opt);
-      }
-    }
-
-    function applyFixturesVisibility(div){
-      if (div === "1st XV"){
-        gamePicker1st.style.display = "inline-block";
-        gamePicker2nd.style.display = "none";
-        gamePickerU16.style.display = "none";
-      } else if (div === "2nd XV"){
-        gamePicker1st.style.display = "none";
-        gamePicker2nd.style.display = "inline-block";
-        gamePickerU16.style.display = "none";
-      } else {
-        gamePicker1st.style.display = "none";
-        gamePicker2nd.style.display = "none";
-        gamePickerU16.style.display = "inline-block";
-      }
-    }
-
-    function applyFixtureToDivision(divKey, games, selectedId){
-      const game = games.find(g => g.id === selectedId) || games[0];
-      if (!game) return;
-
-      state[divKey].selectedGameId = game.id;
-      state[divKey].homeName = game.home;
-      state[divKey].awayName = game.away;
-      saveState();
-
-      if (currentDivision() === divKey) render();
-    }
-
-    // ==========================================================
-    // Now Playing strip
-    // ==========================================================
-    function updateNowPlaying(){
-      const div = currentDivision();
-      const d = state[div];
-
-      let game = null;
-      if (div === "1st XV") game = firstXVGames.find(g => g.id === d.selectedGameId);
-      if (div === "2nd XV") game = secondXVGames.find(g => g.id === d.selectedGameId);
-      if (div === "U16")    game = u16Games.find(g => g.id === d.selectedGameId);
-
-      npDivisionEl.textContent = div;
-      npFixtureEl.textContent  = game ? `${game.home} vs ${game.away}` : "Fixture";
-      npVenueEl.textContent    = game ? game.venue : "Venue";
-    }
-
-    // ==========================================================
-    // Team badges + TV name text
-    // ==========================================================
-    function updateTeamBadges(){
-      setLogoBadge(homeLogoBadge, homeNameEl.value);
-      setLogoBadge(awayLogoBadge, awayNameEl.value);
-      homeNameText.textContent = homeNameEl.value || "Home";
-      awayNameText.textContent = awayNameEl.value || "Away";
-    }
-
-    // Leading highlight
-    function updateLeadingHighlight(){
-      const h = parseInt(homeScoreEl.textContent || "0", 10);
-      const a = parseInt(awayScoreEl.textContent || "0", 10);
-      homeTeamCard.classList.remove("leading");
-      awayTeamCard.classList.remove("leading");
-      if (h > a) homeTeamCard.classList.add("leading");
-      else if (a > h) awayTeamCard.classList.add("leading");
-    }
-
-    // Score flash helper
-    function flashScore(el){
-      el.classList.remove("flash");
-      void el.offsetWidth;
-      el.classList.add("flash");
-      setTimeout(() => el.classList.remove("flash"), 600);
-    }
-
-    // ==========================================================
-    // TV Mode
-    // ==========================================================
-    function setTvMode(on){
-      document.body.classList.toggle("tvMode", !!on);
-      tvModeBtn.textContent = on ? "📺 Exit TV Mode" : "📺 TV Mode";
-
-      if (on && document.documentElement.requestFullscreen){
-        try { document.documentElement.requestFullscreen(); } catch {}
-      }
-      if (!on && document.fullscreenElement && document.exitFullscreen){
-        try { document.exitFullscreen(); } catch {}
-      }
-    }
-
-    tvModeBtn.addEventListener("click", () => {
-      setTvMode(!document.body.classList.contains("tvMode"));
-    });
-
-    // Exit TV mode: double-tap timer (mobile) or Esc (desktop) or double-click timer
-    let lastTap = 0;
-    timerWrapEl.addEventListener("touchend", () => {
-      const now = Date.now();
-      if (now - lastTap < 350){
-        if (document.body.classList.contains("tvMode")) setTvMode(false);
-      }
-      lastTap = now;
-    }, { passive: true });
-
-    timerWrapEl.addEventListener("dblclick", () => {
-      if (document.body.classList.contains("tvMode")) setTvMode(false);
-    });
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && document.body.classList.contains("tvMode")) setTvMode(false);
-    });
-
-    // ==========================================================
-    // Admin UI apply (locks + spectator mode)
-    // ==========================================================
-function applyAdminUI(){
-  adminChipEl.textContent = adminSession.label || "Locked";
-  adminChipEl.classList.toggle("locked", !adminSession.unlocked);
-
-  adminUnlockBtn.style.display = adminSession.unlocked ? "none" : "inline-block";
-  adminLockBtn.style.display   = adminSession.unlocked ? "inline-block" : "none";
-
-  document.body.classList.toggle("adminUnlocked", adminSession.unlocked);
-
-  const div = currentDivision();
-  const allowedHere = canEditDivision(div);
-
-  const editableEls = [
-    timerStartBtn, timerResetBtn,
-    resetDivisionBtn, resetAllBtn,
-    homeNameEl, awayNameEl,
-    gamePicker1st, gamePicker2nd, gamePickerU16,
-    ...Object.values(scoreButtons)
+    return map;
+  })();
+
+  function initialsFor(teamName){
+    return (teamName || "")
+      .replace(/[^A-Za-z0-9 ]/g, "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0,3)
+      .map(w => w[0].toUpperCase())
+      .join("");
+  }
+
+  function logoSrcFor(teamName){
+    return normalizedLogoMap[normalizeTeamName(teamName)] || "";
+  }
+
+  function setLogoBadge(badgeEl, teamName){
+    const src = logoSrcFor(teamName);
+    badgeEl.innerHTML = src
+      ? `<img src="${src}" alt="${teamName} logo">`
+      : `<span class="initials">${initialsFor(teamName)}</span>`;
+  }
+
+  // ==========================================================
+  // FIXTURES (unchanged)
+  // ==========================================================
+  const firstXVGames = [
+    { id: "2026-06-13-1130", label: "Sat, Jun 13, 2026 — vs Scotch College (Home)", home: "Geelong Grammar 1st XV", away: "Scotch College 1st XV", venue: "Geelong Grammar School" },
+    { id: "2026-06-20-1130", label: "Sat, Jun 20, 2026 — at Trinity Grammar (Away)", home: "Trinity Grammar 1st XV", away: "Geelong Grammar 1st XV", venue: "Trinity Grammar" }
   ];
 
-  for (const el of editableEls){
-    if (!el) continue;
-    if (allowedHere){
-      el.classList.remove("disabledLook");
-      if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = false;
-    } else {
-      el.classList.add("disabledLook");
-      if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = true;
+  const secondXVGames = [
+    { id: "2026-06-13-1000", label: "Sat, Jun 13, 2026 — vs Scotch College (Home)", home: "Geelong Grammar 2nd XV", away: "Scotch College 2nd XV", venue: "Geelong Grammar School" },
+    { id: "2026-06-20-1000", label: "Sat, Jun 20, 2026 — at Melbourne High (Away)", home: "Melbourne High School 2nd XV", away: "Geelong Grammar 2nd XV", venue: "Fawkner Park" },
+    { id: "2026-07-25-1000", label: "Sat, Jul 25, 2026 — vs Melbourne Grammar (Home)", home: "Geelong Grammar 2nd XV", away: "Melbourne Grammar 2nd XV", venue: "Geelong Grammar School" },
+    { id: "2026-08-01-1000", label: "Sat, Aug 1, 2026 — vs St Kevin's GOLD (Home)", home: "Geelong Grammar 2nd XV", away: "St Kevin's College GOLD 2nd XV", venue: "Geelong Grammar School" }
+  ];
+
+  const u16Games = [
+    { id: "2026-06-13-0900", label: "Sat, Jun 13, 2026 — vs Scotch College (Home)", home: "Geelong Grammar U16", away: "Scotch College U16", venue: "Geelong Grammar School" }
+  ];
+
+  // ==========================================================
+  // RESULTS (unchanged)
+  // ==========================================================
+  const manualPast1stXV = [
+    { date: "2026-05-23", dateLabel: "Sat, May 23, 2026, 10:30 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 1st XV", away: "Melbourne Grammar 1st XV", homeScore: 0, awayScore: 47, note: "Round 4" },
+    { date: "2026-05-16", dateLabel: "Sat, May 16, 2026, 11:30 AM", venue: "Brighton Grammar School", home: "Brighton Grammar 1st XV", away: "Geelong Grammar 1st XV", homeScore: 61, awayScore: 7, note: "Round 3" },
+    { date: "2026-05-09", dateLabel: "Sat, May 9, 2026, 11:30 AM", venue: "Xavier College - Wakefield Oval", home: "Xavier College 1st XV", away: "Geelong Grammar 1st XV", homeScore: 17, awayScore: 10, note: "Round 2" },
+    { date: "2026-05-02", dateLabel: "Sat, May 2, 2026, 11:30 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 1st XV", away: "Haileybury College 1st XV", homeScore: 5, awayScore: 50, note: "Round 1" }
+  ];
+
+  const manualPast2ndXV = [
+    { date: "2026-05-23", dateLabel: "Sat, May 23, 2026, 10:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 2nd XV", away: "St Kevin's College GREEN 2nd XV", homeScore: null, awayScore: null, note: "Round 4 (score not shown)" },
+    { date: "2026-05-16", dateLabel: "Sat, May 16, 2026, 10:00 AM", venue: "Brighton Grammar School", home: "Brighton Grammar 2nd XV", away: "Geelong Grammar 2nd XV", homeScore: 26, awayScore: 12, note: "Round 3" },
+    { date: "2026-05-09", dateLabel: "Sat, May 9, 2026, 10:00 AM", venue: "Xavier College - Wakefield Oval", home: "Xavier College 2nd XV", away: "Geelong Grammar 2nd XV", homeScore: 0, awayScore: 30, note: "Round 2" },
+    { date: "2026-05-02", dateLabel: "Sat, May 2, 2026, 10:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar 2nd XV", away: "St Patrick's College 2nd XV", homeScore: 21, awayScore: 5, note: "Round 1" }
+  ];
+
+  const manualPastU16 = [
+    { date: "2026-05-30", dateLabel: "Sat, May 30, 2026, 9:00 AM", venue: "St Kevin's College, Toorak", home: "St Kevin's College U16", away: "Geelong Grammar U16", homeScore: 50, awayScore: 14, note: "Round 5" },
+    { date: "2026-05-23", dateLabel: "Sat, May 23, 2026, 9:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar U16", away: "Melbourne Grammar U16", homeScore: 0, awayScore: 24, note: "Round 4" },
+    { date: "2026-05-16", dateLabel: "Sat, May 16, 2026, 9:00 AM", venue: "Brighton Grammar School", home: "Brighton Grammar U16", away: "Geelong Grammar U16", homeScore: 19, awayScore: 29, note: "Round 3" },
+    { date: "2026-05-09", dateLabel: "Sat, May 9, 2026, 9:00 AM", venue: "Xavier College - Wakefield Oval", home: "Xavier College U16", away: "Geelong Grammar U16", homeScore: 17, awayScore: 17, note: "Round 2" },
+    { date: "2026-05-02", dateLabel: "Sat, May 2, 2026, 9:00 AM", venue: "Geelong Grammar School", home: "Geelong Grammar U16", away: "Haileybury College U16", homeScore: 27, awayScore: 10, note: "Round 1" }
+  ];
+
+  // ==========================================================
+  // DOM HOOKS
+  // ==========================================================
+  const divisionSelect = document.getElementById("divisionSelect");
+  const tabButtons = Array.from(document.querySelectorAll(".tabBtn"));
+  const gamePicker1st = document.getElementById("gamePicker1st");
+  const gamePicker2nd = document.getElementById("gamePicker2nd");
+  const gamePickerU16 = document.getElementById("gamePickerU16");
+  const homeTeamCard = document.getElementById("homeTeamCard");
+  const awayTeamCard = document.getElementById("awayTeamCard");
+  const homeScoreEl = document.getElementById("homeScore");
+  const awayScoreEl = document.getElementById("awayScore");
+  const homeNameEl = document.getElementById("homeName");
+  const awayNameEl = document.getElementById("awayName");
+  const homeNameText = document.getElementById("homeNameText");
+  const awayNameText = document.getElementById("awayNameText");
+  const homeLogoBadge = document.getElementById("homeLogoBadge");
+  const awayLogoBadge = document.getElementById("awayLogoBadge");
+  const liveBadgeEl = document.getElementById("liveBadge");
+  const timerWrapEl = document.getElementById("timerWrap");
+  const timerDisplayEl = document.getElementById("timerDisplay");
+  const timerPeriodEl  = document.getElementById("timerPeriod");
+  const timerStartBtn  = document.getElementById("timerStartBtn");
+  const timerResetBtn  = document.getElementById("timerResetBtn");
+  const tvModeBtn = document.getElementById("tvModeBtn");
+  const adminUnlockBtn = document.getElementById("adminUnlockBtn");
+  const adminLockBtn   = document.getElementById("adminLockBtn");
+  const adminChipEl    = document.getElementById("adminChip");
+  const resetDivisionBtn = document.getElementById("resetDivisionBtn");
+  const resetAllBtn      = document.getElementById("resetAllBtn");
+  const resultsGridEl = document.getElementById("resultsGrid");
+  const resultsTitleEl = document.getElementById("resultsTitle");
+  const resultsNoteEl  = document.getElementById("resultsNote");
+  const npDivisionEl = document.getElementById("npDivision");
+  const npFixtureEl  = document.getElementById("npFixture");
+  const npVenueEl    = document.getElementById("npVenue");
+  const a2hsBanner = document.getElementById("a2hsBanner");
+  const a2hsCloseBtn = document.getElementById("a2hsCloseBtn");
+
+  const scoreButtons = {
+    btnHomeTry: document.getElementById("btnHomeTry"),
+    btnHomeConv: document.getElementById("btnHomeConv"),
+    btnHomePen: document.getElementById("btnHomePen"),
+    btnHomeDrop: document.getElementById("btnHomeDrop"),
+    btnHomeMinus1: document.getElementById("btnHomeMinus1"),
+    btnHomeMinus5: document.getElementById("btnHomeMinus5"),
+    btnAwayTry: document.getElementById("btnAwayTry"),
+    btnAwayConv: document.getElementById("btnAwayConv"),
+    btnAwayPen: document.getElementById("btnAwayPen"),
+    btnAwayDrop: document.getElementById("btnAwayDrop"),
+    btnAwayMinus1: document.getElementById("btnAwayMinus1"),
+    btnAwayMinus5: document.getElementById("btnAwayMinus5")
+  };
+
+  // ==========================================================
+  // STATE (same structure)
+  // ==========================================================
+  const STORAGE_KEY = "tm_scoreboard_state_v2";
+  const defaultState = {
+    "1st XV": { home: 0, away: 0, homeName: "Geelong Grammar 1st XV", awayName: "Opposition", selectedGameId: firstXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false },
+    "2nd XV": { home: 0, away: 0, homeName: "Geelong Grammar 2nd XV", awayName: "Opposition", selectedGameId: secondXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false },
+    "U16":    { home: 0, away: 0, homeName: "Geelong Grammar U16",    awayName: "Opposition", selectedGameId: u16Games[0]?.id || "", timerSeconds: 0, timerRunning: false }
+  };
+
+  function loadState(){
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return structuredClone(defaultState);
+    try {
+      const parsed = JSON.parse(saved);
+      for (const div of Object.keys(defaultState)){
+        if (!parsed[div]) parsed[div] = structuredClone(defaultState[div]);
+        if (typeof parsed[div].timerSeconds !== "number") parsed[div].timerSeconds = 0;
+        if (typeof parsed[div].timerRunning !== "boolean") parsed[div].timerRunning = false;
+      }
+      return parsed;
+    } catch {
+      return structuredClone(defaultState);
     }
   }
 
-  // always allow viewing
-  divisionSelect.disabled = false;
-  divisionSelect.classList.remove("disabledLook");
-}
+  let state = loadState();
+  function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function currentDivision(){ return divisionSelect.value; }
 
-    // ==========================================================
-    // Scoring actions
-    // ==========================================================
-    function addPoints(side, points){
-      if (!requireAdminForCurrentDivision()) return;
-      const div = currentDivision();
-      const d = state[div];
+  // ==========================================================
+  // V2 Sync helpers
+  // ==========================================================
+  function markPendingWrite(){
+    pendingWriteAtMs = Date.now();
+    writeInFlight = true;
+    return pendingWriteAtMs;
+  }
 
-      d[side] = d[side] + points;
-      if (d[side] < 0) d[side] = 0;
-
-      saveState();
-      render();
-
-      if (side === "home") flashScore(homeScoreEl);
-      else flashScore(awayScoreEl);
-
-      pulseLiveBadge();
+  function normalizeRemotePayload(payload){
+    // Accept {state: {...}, updatedAtMs: ...} OR raw state object OR {divisions:{...}}
+    if (!payload || typeof payload !== "object") return null;
+    if (payload.state && typeof payload.state === "object"){
+      return { updatedAtMs: payload.updatedAtMs || 0, state: payload.state };
     }
-
-    // ==========================================================
-    // A2HS hint (iOS Safari only)
-    // ==========================================================
-    function isIos(){
-      return /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (payload.divisions && typeof payload.divisions === "object"){
+      return { updatedAtMs: payload.updatedAtMs || 0, state: payload.divisions };
     }
-    function isStandalone(){
-      return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+    if (payload["1st XV"] || payload["2nd XV"] || payload["U16"]){
+      return { updatedAtMs: payload.updatedAtMs || 0, state: payload };
     }
-    const A2HS_DISMISS_KEY = "tm_a2hs_dismissed_v1";
-    function shouldShowA2HS(){
-      if (!isIos()) return false;
-      if (isStandalone()) return false;
-      return localStorage.getItem(A2HS_DISMISS_KEY) !== "1";
-    }
-    function showA2HS(){ a2hsBanner.style.display = "block"; }
-    function hideA2HS(){
-      a2hsBanner.style.display = "none";
-      localStorage.setItem(A2HS_DISMISS_KEY, "1");
-    }
-    a2hsCloseBtn.addEventListener("click", hideA2HS);
+    return null;
+  }
 
-    // ==========================================================
-    // Mobile tabs sync
-    // ==========================================================
-    function syncTabsActive(){
-      const div = currentDivision();
-      tabButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.div === div));
-    }
-    tabButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        divisionSelect.value = btn.dataset.div;
-        render();
-      });
-    });
+  function applyRemoteState(payload){
+    const norm = normalizeRemotePayload(payload);
+    if (!norm) return;
 
-    // ==========================================================
-    // Events wiring
-    // ==========================================================
-    adminUnlockBtn.addEventListener("click", unlockAdmin);
-    adminLockBtn.addEventListener("click", () => lockAdmin(false));
+    const incoming = norm.updatedAtMs || 0;
 
-    resetDivisionBtn.addEventListener("click", () => {
-      if (!requireAdminForCurrentDivision()) return;
-      const div = currentDivision();
-      const keepSelected = state[div].selectedGameId;
-      const keepNames = { homeName: state[div].homeName, awayName: state[div].awayName };
-      state[div] = structuredClone(defaultState[div]);
-      state[div].selectedGameId = keepSelected;
-      state[div].homeName = keepNames.homeName;
-      state[div].awayName = keepNames.awayName;
-      saveState();
-      render();
-      pulseLiveBadge();
-    });
+    // Anti-revert guard (only meaningful on scorer device, but safe everywhere)
+    if (writeInFlight && incoming && incoming < pendingWriteAtMs) return;
 
-    resetAllBtn.addEventListener("click", () => {
-      if (!(adminSession.unlocked && adminSession.allowed.includes("*"))){
-        alert("Power admin required to reset ALL divisions.");
-        return;
-      }
-      state = structuredClone(defaultState);
-      saveState();
-      render();
-      pulseLiveBadge();
-    });
+    state = norm.state;
+    saveState();
 
-    timerStartBtn.addEventListener("click", () => {
-      if (!requireAdminForCurrentDivision()) return;
-      const div = currentDivision();
-      state[div].timerRunning = !state[div].timerRunning;
-      saveState();
-      renderTimer();
-      pulseLiveBadge();
-    });
-
-    timerResetBtn.addEventListener("click", () => {
-      if (!requireAdminForCurrentDivision()) return;
-      const div = currentDivision();
-      state[div].timerSeconds = 0;
-      state[div].timerRunning = false;
-      saveState();
-      renderTimer();
-      pulseLiveBadge();
-    });
-
-    homeNameEl.addEventListener("input", () => {
-      if (!requireAdminForCurrentDivision()) { render(); return; }
-      const div = currentDivision();
-      state[div].homeName = homeNameEl.value || "Home";
-      saveState();
-      updateTeamBadges();
-      updateNowPlaying();
-    });
-
-    awayNameEl.addEventListener("input", () => {
-      if (!requireAdminForCurrentDivision()) { render(); return; }
-      const div = currentDivision();
-      state[div].awayName = awayNameEl.value || "Away";
-      saveState();
-      updateTeamBadges();
-      updateNowPlaying();
-    });
-
-    divisionSelect.addEventListener("change", () => render());
-
-    gamePicker1st.addEventListener("change", () => {
-      if (!requireAdminForCurrentDivision()) { render(); return; }
-      applyFixtureToDivision("1st XV", firstXVGames, gamePicker1st.value);
-      pulseLiveBadge();
-    });
-    gamePicker2nd.addEventListener("change", () => {
-      if (!requireAdminForCurrentDivision()) { render(); return; }
-      applyFixtureToDivision("2nd XV", secondXVGames, gamePicker2nd.value);
-      pulseLiveBadge();
-    });
-    gamePickerU16.addEventListener("change", () => {
-      if (!requireAdminForCurrentDivision()) { render(); return; }
-      applyFixtureToDivision("U16", u16Games, gamePickerU16.value);
-      pulseLiveBadge();
-    });
-
-    // Score buttons
-    scoreButtons.btnHomeTry.addEventListener("click", () => addPoints("home", 5));
-    scoreButtons.btnHomeConv.addEventListener("click", () => addPoints("home", 2));
-    scoreButtons.btnHomePen.addEventListener("click", () => addPoints("home", 3));
-    scoreButtons.btnHomeDrop.addEventListener("click", () => addPoints("home", 3));
-    scoreButtons.btnHomeMinus1.addEventListener("click", () => addPoints("home", -1));
-    scoreButtons.btnHomeMinus5.addEventListener("click", () => addPoints("home", -5));
-
-    scoreButtons.btnAwayTry.addEventListener("click", () => addPoints("away", 5));
-    scoreButtons.btnAwayConv.addEventListener("click", () => addPoints("away", 2));
-    scoreButtons.btnAwayPen.addEventListener("click", () => addPoints("away", 3));
-    scoreButtons.btnAwayDrop.addEventListener("click", () => addPoints("away", 3));
-    scoreButtons.btnAwayMinus1.addEventListener("click", () => addPoints("away", -1));
-    scoreButtons.btnAwayMinus5.addEventListener("click", () => addPoints("away", -5));
-
-    // ==========================================================
-    // Render
-    // ==========================================================
-    function render(){
-      const div = currentDivision();
-      const d = state[div];
-
-      homeScoreEl.textContent = d.home;
-      awayScoreEl.textContent = d.away;
-
-      homeNameEl.value = d.homeName;
-      awayNameEl.value = d.awayName;
-
-      applyFixturesVisibility(div);
-      if (div === "1st XV") gamePicker1st.value = d.selectedGameId || firstXVGames[0]?.id || "";
-      if (div === "2nd XV") gamePicker2nd.value = d.selectedGameId || secondXVGames[0]?.id || "";
-      if (div === "U16")    gamePickerU16.value = d.selectedGameId || u16Games[0]?.id || "";
-
-      updateTeamBadges();
-      updateLeadingHighlight();
-      updateNowPlaying();
-      updateResultsForDivision(div);
-updateLastUpdated();
-      renderTimer();
-      applyAdminUI();
-      syncTabsActive();
-    }
-
-    // ==========================================================
-    // Initialise
-    // ==========================================================
-    populatePicker(gamePicker1st, firstXVGames);
-    populatePicker(gamePicker2nd, secondXVGames);
-    populatePicker(gamePickerU16, u16Games);
-
-    if (!state["1st XV"].selectedGameId) state["1st XV"].selectedGameId = firstXVGames[0]?.id || "";
-    if (!state["2nd XV"].selectedGameId) state["2nd XV"].selectedGameId = secondXVGames[0]?.id || "";
-    if (!state["U16"].selectedGameId)    state["U16"].selectedGameId    = u16Games[0]?.id || "";
-
-    applyFixtureToDivision("1st XV", firstXVGames, state["1st XV"].selectedGameId);
-    applyFixtureToDivision("2nd XV", secondXVGames, state["2nd XV"].selectedGameId);
-    applyFixtureToDivision("U16", u16Games, state["U16"].selectedGameId);
-
-    if (shouldShowA2HS()){
-      setTimeout(showA2HS, 1200);
-    }
-
+    if (incoming) lastRemoteUpdatedAtMs = incoming;
     render();
 
-// Auto-refresh spectator view every 15 seconds
-setInterval(() => {
-  // Never auto-refresh the scorer device
-  if (isScorerDevice) return;
-
-  // Only refresh spectators
-  if (!document.body.classList.contains("adminUnlocked")) {
-    location.reload();
+    // If remote has caught up, release lock
+    if (writeInFlight && incoming && incoming >= pendingWriteAtMs){
+      writeInFlight = false;
+      pendingWriteAtMs = 0;
+    }
   }
-}, 15000);
 
-  </script>
+  function jsonpGet(url, onData){
+    const cb = "__tm_cb_" + Math.random().toString(36).slice(2);
+    const script = document.createElement("script");
+    window[cb] = (data) => {
+      try { onData(data); }
+      finally {
+        delete window[cb];
+        script.remove();
+      }
+    };
+    script.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&_=" + Date.now();
+    document.body.appendChild(script);
+  }
+
+  function pollRemote(){
+    // spectators only
+    if (isScorerDevice) return;
+    if (adminSession.unlocked) return;
+    jsonpGet(GAS_WEBAPP_URL, applyRemoteState);
+  }
+
+  function schedulePush(force=false){
+    if (!adminSession.unlocked) return;
+    if (!adminPinForSync) return;
+
+    const now = Date.now();
+    if (!force && (now - lastPushAtMs) < SYNC_PUSH_THROTTLE_MS){
+      if (pushTimer) return;
+      const wait = Math.max(50, SYNC_PUSH_THROTTLE_MS - (now - lastPushAtMs));
+      pushTimer = setTimeout(() => { pushTimer = null; schedulePush(true); }, wait);
+      return;
+    }
+
+    lastPushAtMs = now;
+
+    // Mark write pending (used to prevent flicker)
+    if (!pendingWriteAtMs) markPendingWrite();
+
+    const payload = {
+      pin: adminPinForSync,
+      updatedAtMs: pendingWriteAtMs,
+      state: state
+    };
+
+    // fire-and-forget (no-cors)
+    fetch(GAS_WEBAPP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }).catch(()=>{});
+
+    // safety unlock if server slow
+    setTimeout(() => { writeInFlight = false; pendingWriteAtMs = 0; }, 2000);
+  }
+
+  // ==========================================================
+  // Utility: escape html
+  // ==========================================================
+  function escapeHtml(s){
+    return (s ?? "").toString().replace(/[<>&"]/g, c => ({
+      "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;"
+    }[c]));
+  }
+
+  // ==========================================================
+  // LIVE badge pulses
+  // ==========================================================
+  let livePulseTimeout = null;
+
+  function setLiveBadge(on, pulse){
+    liveBadgeEl.classList.toggle("on", !!on);
+    liveBadgeEl.classList.toggle("pulse", !!pulse);
+  }
+
+  function pulseLiveBadge(){
+    setLiveBadge(true, true);
+    clearTimeout(livePulseTimeout);
+    livePulseTimeout = setTimeout(() => {
+      const div = currentDivision();
+      if (state[div].timerRunning) setLiveBadge(true, false);
+      else setLiveBadge(false, false);
+    }, 3000);
+  }
+
+  // ==========================================================
+  // TIMER
+  // ==========================================================
+  function formatTime(sec){
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  }
+
+  function periodLabel(sec){
+    const h = 35 * 60;
+    const ft = 70 * 60;
+    if (sec >= ft) return "FT";
+    if (sec >= h) return "H2";
+    return "H1";
+  }
+
+  function updateLastUpdated(){
+    const ms = (!isScorerDevice && lastRemoteUpdatedAtMs) ? lastRemoteUpdatedAtMs : Date.now();
+    const t = new Date(ms);
+    const time = t.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    document.getElementById("lastUpdated").textContent = `Last updated: ${time}`;
+  }
+
+  function renderTimer(){
+    const div = currentDivision();
+    const d = state[div];
+    timerDisplayEl.textContent = formatTime(d.timerSeconds);
+    timerPeriodEl.textContent = periodLabel(d.timerSeconds);
+    timerStartBtn.textContent = d.timerRunning ? "Pause" : "Start";
+    if (d.timerRunning) setLiveBadge(true, false);
+    else if (!liveBadgeEl.classList.contains("pulse")) setLiveBadge(false, false);
+  }
+
+  setInterval(() => {
+    let changed = false;
+    for (const div of Object.keys(defaultState)){
+      if (state[div].timerRunning){
+        state[div].timerSeconds += 1;
+        changed = true;
+      }
+    }
+    if (changed){
+      saveState();
+      renderTimer();
+      const div = currentDivision();
+      if (state[div].timerRunning) setLiveBadge(true, false);
+
+      // push timer updates (throttled) from admin device only
+      if (isScorerDevice && adminSession.unlocked){
+        markPendingWrite();
+        schedulePush(false);
+      }
+    }
+  }, 1000);
+
+  // ==========================================================
+  // RESULTS rendering (unchanged)
+  // ==========================================================
+  function extractRoundCode(note){
+    const m = /round\s*(\d+)/i.exec(note || "");
+    return m ? `R${m[1]}` : "R?";
+  }
+  function extractNoteExtra(note){
+    if (!note) return "";
+    let extra = note.replace(/round\s*\d+/i, "").trim();
+    extra = extra.replace(/^[\-\u2013•:()]+/g, "").trim();
+    extra = extra.replace(/[()]+/g, "").trim();
+    return extra;
+  }
+  function outcomeForGeelong(game){
+    const homeIsGG = (game.home || "").toLowerCase().includes("geelong grammar");
+    const awayIsGG = (game.away || "").toLowerCase().includes("geelong grammar");
+    if (game.homeScore == null || game.awayScore == null){
+      return { code:"TBC", cls:"tbc", homeIsGG, awayIsGG };
+    }
+    const ggScore = homeIsGG ? game.homeScore : game.awayScore;
+    const oppScore = homeIsGG ? game.awayScore : game.homeScore;
+    if (ggScore === oppScore) return { code:"D", cls:"draw", homeIsGG, awayIsGG };
+    return ggScore > oppScore ? { code:"W", cls:"win", homeIsGG, awayIsGG } : { code:"L", cls:"loss", homeIsGG, awayIsGG };
+  }
+  function logoHtml(teamName){
+    const src = logoSrcFor(teamName);
+    if (src) return `<span class="logoBadge"><img src="${src}" alt="${escapeHtml(teamName)} logo"></span>`;
+    return `<span class="logoBadge"><span class="initials">${initialsFor(teamName)}</span></span>`;
+  }
+  function scorePillHtml(g, homeIsGG, awayIsGG){
+    const hs = (g.homeScore == null) ? "—" : String(g.homeScore);
+    const as = (g.awayScore == null) ? "—" : String(g.awayScore);
+    const homeCls = homeIsGG ? "scorePart gg" : "scorePart";
+    const awayCls = awayIsGG ? "scorePart gg" : "scorePart";
+    return `
+      <span class="${homeCls}">${escapeHtml(hs)}</span>
+      <span class="dash">-</span>
+      <span class="${awayCls}">${escapeHtml(as)}</span>
+    `;
+  }
+  function renderResults(games){
+    resultsGridEl.innerHTML = "";
+    const sorted = [...games].sort((a,b) => (a.date < b.date ? 1 : -1));
+    for (const g of sorted){
+      const roundCode = extractRoundCode(g.note);
+      const extra = extractNoteExtra(g.note);
+      const outcome = outcomeForGeelong(g);
+      const card = document.createElement("div");
+      card.className = `resultCard ${outcome.cls}`;
+      card.innerHTML = `
+        <div class="meta">
+          <span class="roundBadge">${escapeHtml(roundCode)}</span>
+          <span class="outcomeBadge ${escapeHtml(outcome.cls)}">${escapeHtml(outcome.code)}</span>
+          <span>${escapeHtml(g.dateLabel)} • ${escapeHtml(g.venue)}</span>
+          ${extra ? `<span class="metaExtra">• ${escapeHtml(extra)}</span>` : ""}
+        </div>
+        <div class="divider"></div>
+        <div class="matchRow">
+          <div class="teamSide">
+            ${logoHtml(g.home)}
+            <div class="teamText" title="${escapeHtml(g.home)}">${escapeHtml(g.home)}</div>
+          </div>
+          <div class="scorePill">${scorePillHtml(g, outcome.homeIsGG, outcome.awayIsGG)}</div>
+          <div class="teamSide right">
+            <div class="teamText" title="${escapeHtml(g.away)}">${escapeHtml(g.away)}</div>
+            ${logoHtml(g.away)}
+          </div>
+        </div>
+      `;
+      resultsGridEl.appendChild(card);
+    }
+  }
+  function updateResultsForDivision(div){
+    if (div === "U16"){
+      resultsTitleEl.textContent = "U16 — Previous Games (This Season)";
+      resultsNoteEl.textContent  = "2026 VSRU — U16A Results";
+      renderResults(manualPastU16);
+    } else if (div === "2nd XV"){
+      resultsTitleEl.textContent = "2nd XV — Previous Games (This Season)";
+      resultsNoteEl.textContent  = "2026 VSRU — 2nd XV Results";
+      renderResults(manualPast2ndXV);
+    } else {
+      resultsTitleEl.textContent = "1st XV — Previous Games (This Season)";
+      resultsNoteEl.textContent  = "2026 VSRU — 1st XV Results";
+      renderResults(manualPast1stXV);
+    }
+  }
+
+  // ==========================================================
+  // FIXTURE pickers
+  // ==========================================================
+  function populatePicker(selectEl, games){
+    selectEl.innerHTML = "";
+    for (const g of games){
+      const opt = document.createElement("option");
+      opt.value = g.id;
+      opt.textContent = g.label;
+      selectEl.appendChild(opt);
+    }
+  }
+  function applyFixturesVisibility(div){
+    if (div === "1st XV"){
+      gamePicker1st.style.display = "inline-block";
+      gamePicker2nd.style.display = "none";
+      gamePickerU16.style.display = "none";
+    } else if (div === "2nd XV"){
+      gamePicker1st.style.display = "none";
+      gamePicker2nd.style.display = "inline-block";
+      gamePickerU16.style.display = "none";
+    } else {
+      gamePicker1st.style.display = "none";
+      gamePicker2nd.style.display = "none";
+      gamePickerU16.style.display = "inline-block";
+    }
+  }
+  function applyFixtureToDivision(divKey, games, selectedId){
+    const game = games.find(g => g.id === selectedId) || games[0];
+    if (!game) return;
+    state[divKey].selectedGameId = game.id;
+    state[divKey].homeName = game.home;
+    state[divKey].awayName = game.away;
+    saveState();
+    if (currentDivision() === divKey) render();
+  }
+
+  // Now Playing strip
+  function updateNowPlaying(){
+    const div = currentDivision();
+    const d = state[div];
+    let game = null;
+    if (div === "1st XV") game = firstXVGames.find(g => g.id === d.selectedGameId);
+    if (div === "2nd XV") game = secondXVGames.find(g => g.id === d.selectedGameId);
+    if (div === "U16")    game = u16Games.find(g => g.id === d.selectedGameId);
+    npDivisionEl.textContent = div;
+    npFixtureEl.textContent  = game ? `${game.home} vs ${game.away}` : "Fixture";
+    npVenueEl.textContent    = game ? game.venue : "Venue";
+  }
+
+  function updateTeamBadges(){
+    setLogoBadge(homeLogoBadge, homeNameEl.value);
+    setLogoBadge(awayLogoBadge, awayNameEl.value);
+    homeNameText.textContent = homeNameEl.value || "Home";
+    awayNameText.textContent = awayNameEl.value || "Away";
+  }
+
+  function updateLeadingHighlight(){
+    const h = parseInt(homeScoreEl.textContent || "0", 10);
+    const a = parseInt(awayScoreEl.textContent || "0", 10);
+    homeTeamCard.classList.remove("leading");
+    awayTeamCard.classList.remove("leading");
+    if (h > a) homeTeamCard.classList.add("leading");
+    else if (a > h) awayTeamCard.classList.add("leading");
+  }
+
+  function flashScore(el){
+    el.classList.remove("flash");
+    void el.offsetWidth;
+    el.classList.add("flash");
+    setTimeout(() => el.classList.remove("flash"), 600);
+  }
+
+  // TV Mode
+  function setTvMode(on){
+    document.body.classList.toggle("tvMode", !!on);
+    tvModeBtn.textContent = on ? "📺 Exit TV Mode" : "📺 TV Mode";
+    if (on && document.documentElement.requestFullscreen){
+      try { document.documentElement.requestFullscreen(); } catch {}
+    }
+    if (!on && document.fullscreenElement && document.exitFullscreen){
+      try { document.exitFullscreen(); } catch {}
+    }
+  }
+  tvModeBtn.addEventListener("click", () => {
+    setTvMode(!document.body.classList.contains("tvMode"));
+  });
+
+  let lastTap = 0;
+  timerWrapEl.addEventListener("touchend", () => {
+    const now = Date.now();
+    if (now - lastTap < 350){
+      if (document.body.classList.contains("tvMode")) setTvMode(false);
+    }
+    lastTap = now;
+  }, { passive: true });
+
+  timerWrapEl.addEventListener("dblclick", () => {
+    if (document.body.classList.contains("tvMode")) setTvMode(false);
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.body.classList.contains("tvMode")) setTvMode(false);
+  });
+
+  // Admin UI apply
+  function applyAdminUI(){
+    adminChipEl.textContent = adminSession.label || "Locked";
+    adminChipEl.classList.toggle("locked", !adminSession.unlocked);
+    adminUnlockBtn.style.display = adminSession.unlocked ? "none" : "inline-block";
+    adminLockBtn.style.display   = adminSession.unlocked ? "inline-block" : "none";
+    document.body.classList.toggle("adminUnlocked", adminSession.unlocked);
+
+    const div = currentDivision();
+    const allowedHere = canEditDivision(div);
+
+    const editableEls = [
+      timerStartBtn, timerResetBtn,
+      resetDivisionBtn, resetAllBtn,
+      homeNameEl, awayNameEl,
+      gamePicker1st, gamePicker2nd, gamePickerU16,
+      ...Object.values(scoreButtons)
+    ];
+
+    for (const el of editableEls){
+      if (!el) continue;
+      if (allowedHere){
+        el.classList.remove("disabledLook");
+        if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = false;
+      } else {
+        el.classList.add("disabledLook");
+        if (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "BUTTON") el.disabled = true;
+      }
+    }
+    divisionSelect.disabled = false;
+    divisionSelect.classList.remove("disabledLook");
+  }
+
+  // Scoring
+  function addPoints(side, points){
+    if (!requireAdminForCurrentDivision()) return;
+    const div = currentDivision();
+    const d = state[div];
+    d[side] = d[side] + points;
+    if (d[side] < 0) d[side] = 0;
+
+    saveState();
+    render();
+
+    if (side === "home") flashScore(homeScoreEl);
+    else flashScore(awayScoreEl);
+
+    pulseLiveBadge();
+
+    // push change to spectators
+    if (isScorerDevice){
+      markPendingWrite();
+      schedulePush(true);
+    }
+  }
+
+  // A2HS
+  function isIos(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+  function isStandalone(){ return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches; }
+  const A2HS_DISMISS_KEY = "tm_a2hs_dismissed_v2";
+  function shouldShowA2HS(){
+    if (!isIos()) return false;
+    if (isStandalone()) return false;
+    return localStorage.getItem(A2HS_DISMISS_KEY) !== "1";
+  }
+  function showA2HS(){ a2hsBanner.style.display = "block"; }
+  function hideA2HS(){
+    a2hsBanner.style.display = "none";
+    localStorage.setItem(A2HS_DISMISS_KEY, "1");
+  }
+  a2hsCloseBtn.addEventListener("click", hideA2HS);
+
+  // Mobile tabs sync
+  function syncTabsActive(){
+    const div = currentDivision();
+    tabButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.div === div));
+  }
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      divisionSelect.value = btn.dataset.div;
+      render();
+    });
+  });
+
+  // Events wiring
+  adminUnlockBtn.addEventListener("click", unlockAdmin);
+  adminLockBtn.addEventListener("click", () => lockAdmin(false));
+
+  resetDivisionBtn.addEventListener("click", () => {
+    if (!requireAdminForCurrentDivision()) return;
+    const div = currentDivision();
+    const keepSelected = state[div].selectedGameId;
+    const keepNames = { homeName: state[div].homeName, awayName: state[div].awayName };
+    state[div] = structuredClone(defaultState[div]);
+    state[div].selectedGameId = keepSelected;
+    state[div].homeName = keepNames.homeName;
+    state[div].awayName = keepNames.awayName;
+    saveState();
+    render();
+    pulseLiveBadge();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
+  });
+
+  resetAllBtn.addEventListener("click", () => {
+    if (!(adminSession.unlocked && adminSession.allowed.includes("*"))){
+      alert("Power admin required to reset ALL divisions.");
+      return;
+    }
+    state = structuredClone(defaultState);
+    saveState();
+    render();
+    pulseLiveBadge();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
+  });
+
+  timerStartBtn.addEventListener("click", () => {
+    if (!requireAdminForCurrentDivision()) return;
+    const div = currentDivision();
+    state[div].timerRunning = !state[div].timerRunning;
+    saveState();
+    renderTimer();
+    pulseLiveBadge();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
+  });
+
+  timerResetBtn.addEventListener("click", () => {
+    if (!requireAdminForCurrentDivision()) return;
+    const div = currentDivision();
+    state[div].timerSeconds = 0;
+    state[div].timerRunning = false;
+    saveState();
+    renderTimer();
+    pulseLiveBadge();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
+  });
+
+  homeNameEl.addEventListener("input", () => {
+    if (!requireAdminForCurrentDivision()) { render(); return; }
+    const div = currentDivision();
+    state[div].homeName = homeNameEl.value || "Home";
+    saveState();
+    updateTeamBadges();
+    updateNowPlaying();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(false); }
+  });
+
+  awayNameEl.addEventListener("input", () => {
+    if (!requireAdminForCurrentDivision()) { render(); return; }
+    const div = currentDivision();
+    state[div].awayName = awayNameEl.value || "Away";
+    saveState();
+    updateTeamBadges();
+    updateNowPlaying();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(false); }
+  });
+
+  divisionSelect.addEventListener("change", () => render());
+
+  gamePicker1st.addEventListener("change", () => {
+    if (!requireAdminForCurrentDivision()) { render(); return; }
+    applyFixtureToDivision("1st XV", firstXVGames, gamePicker1st.value);
+    pulseLiveBadge();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(false); }
+  });
+  gamePicker2nd.addEventListener("change", () => {
+    if (!requireAdminForCurrentDivision()) { render(); return; }
+    applyFixtureToDivision("2nd XV", secondXVGames, gamePicker2nd.value);
+    pulseLiveBadge();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(false); }
+  });
+  gamePickerU16.addEventListener("change", () => {
+    if (!requireAdminForCurrentDivision()) { render(); return; }
+    applyFixtureToDivision("U16", u16Games, gamePickerU16.value);
+    pulseLiveBadge();
+    if (isScorerDevice){ markPendingWrite(); schedulePush(false); }
+  });
+
+  // Score buttons
+  scoreButtons.btnHomeTry.addEventListener("click", () => addPoints("home", 5));
+  scoreButtons.btnHomeConv.addEventListener("click", () => addPoints("home", 2));
+  scoreButtons.btnHomePen.addEventListener("click", () => addPoints("home", 3));
+  scoreButtons.btnHomeDrop.addEventListener("click", () => addPoints("home", 3));
+  scoreButtons.btnHomeMinus1.addEventListener("click", () => addPoints("home", -1));
+  scoreButtons.btnHomeMinus5.addEventListener("click", () => addPoints("home", -5));
+  scoreButtons.btnAwayTry.addEventListener("click", () => addPoints("away", 5));
+  scoreButtons.btnAwayConv.addEventListener("click", () => addPoints("away", 2));
+  scoreButtons.btnAwayPen.addEventListener("click", () => addPoints("away", 3));
+  scoreButtons.btnAwayDrop.addEventListener("click", () => addPoints("away", 3));
+  scoreButtons.btnAwayMinus1.addEventListener("click", () => addPoints("away", -1));
+  scoreButtons.btnAwayMinus5.addEventListener("click", () => addPoints("away", -5));
+
+  // Render
+  function render(){
+    const div = currentDivision();
+    const d = state[div];
+    homeScoreEl.textContent = d.home;
+    awayScoreEl.textContent = d.away;
+    homeNameEl.value = d.homeName;
+    awayNameEl.value = d.awayName;
+    applyFixturesVisibility(div);
+    if (div === "1st XV") gamePicker1st.value = d.selectedGameId || firstXVGames[0]?.id || "";
+    if (div === "2nd XV") gamePicker2nd.value = d.selectedGameId || secondXVGames[0]?.id || "";
+    if (div === "U16")    gamePickerU16.value = d.selectedGameId || u16Games[0]?.id || "";
+    updateTeamBadges();
+    updateLeadingHighlight();
+    updateNowPlaying();
+    updateResultsForDivision(div);
+    updateLastUpdated();
+    renderTimer();
+    applyAdminUI();
+    syncTabsActive();
+  }
+
+  // Initialise
+  populatePicker(gamePicker1st, firstXVGames);
+  populatePicker(gamePicker2nd, secondXVGames);
+  populatePicker(gamePickerU16, u16Games);
+  if (!state["1st XV"].selectedGameId) state["1st XV"].selectedGameId = firstXVGames[0]?.id || "";
+  if (!state["2nd XV"].selectedGameId) state["2nd XV"].selectedGameId = secondXVGames[0]?.id || "";
+  if (!state["U16"].selectedGameId)    state["U16"].selectedGameId    = u16Games[0]?.id || "";
+  applyFixtureToDivision("1st XV", firstXVGames, state["1st XV"].selectedGameId);
+  applyFixtureToDivision("2nd XV", secondXVGames, state["2nd XV"].selectedGameId);
+  applyFixtureToDivision("U16", u16Games, state["U16"].selectedGameId);
+
+  if (shouldShowA2HS()){
+    setTimeout(showA2HS, 1200);
+  }
+
+  render();
+
+  // V2 spectator polling loop (replaces location.reload)
+  setInterval(pollRemote, SYNC_POLL_MS);
+
+</script>
 
 </body>
 </html>
