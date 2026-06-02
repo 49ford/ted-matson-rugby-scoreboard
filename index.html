@@ -134,8 +134,7 @@
     </div>
   </div>
 
-  <div class="lastUpdated" id="lastUpdated">Last updated: --</div>
-
+  <div class="lastUpdated" id="lastUpdated">Connecting…</div>
   <!-- Now Playing -->
   <div class="nowPlaying" aria-label="Now playing">
     <span id="npDivision">1st XV</span><span class="npDot">•</span>
@@ -243,6 +242,12 @@ const scoreBtns = {
 };
 
 function currentDivision(){ return divisionSelect.value; }
+  
+  function requireState(){
+  if (remoteState && remoteState.divisions) return true;
+  alert("Still connecting to the scoreboard server. Try again in 2–3 seconds.");
+  return false;
+}
 
 /** Timer compute (no drift): base + (now-start) if running */
 function computeDisplaySeconds(divData){
@@ -339,7 +344,7 @@ async function pushState(divisionHint=""){
 
 /** Mark local change as pending, render, then push */
 function commitLocalChange(div){
-  if (!remoteState) return;
+  if (!requireState()) return;
   remoteState.updatedAtMs = Date.now();
   pendingWriteAtMs = remoteState.updatedAtMs;
   writeInFlight = true;
@@ -399,7 +404,8 @@ function applyAdminUI(){
   adminChipEl.textContent = adminUnlocked ? "Admin" : "Locked";
   adminChipEl.classList.toggle("locked", !adminUnlocked);
 
-  const editable = adminUnlocked; // ✅ no dependency on remoteState
+  // ✅ IMPORTANT: enable controls based on adminUnlocked ONLY (not remoteState)
+  const editable = adminUnlocked;
 
   [timerStartBtn, timerResetBtn, resetDivisionBtn, resetAllBtn]
     .forEach(btn => btn.disabled = !editable);
@@ -420,7 +426,7 @@ function requireAdmin(){
 /** Actions */
 function adjustScore(side, delta){
   if (!requireAdmin()) return;
-  if (!remoteState) return;
+  if (!requireState()) return;
 
   const div = currentDivision();
   const d = remoteState.divisions[div];
@@ -431,7 +437,7 @@ function adjustScore(side, delta){
 
 function toggleTimer(){
   if (!requireAdmin()) return;
-  if (!remoteState) return;
+  if (!requireState()) return;
 
   const div = currentDivision();
   const d = remoteState.divisions[div];
@@ -452,7 +458,7 @@ function toggleTimer(){
 
 function resetTimer(){
   if (!requireAdmin()) return;
-  if (!remoteState) return;
+  if (!requireState()) return;
 
   const div = currentDivision();
   const d = remoteState.divisions[div];
@@ -465,7 +471,7 @@ function resetTimer(){
 
 function resetDivision(){
   if (!requireAdmin()) return;
-  if (!remoteState) return;
+  if (!requireState()) return;
 
   const div = currentDivision();
   const d = remoteState.divisions[div];
@@ -480,7 +486,7 @@ function resetDivision(){
 
 function resetAll(){
   if (!requireAdmin()) return;
-  if (!remoteState) return;
+  if (!requireState()) return;
 
   Object.keys(remoteState.divisions).forEach(div => {
     const d = remoteState.divisions[div];
@@ -529,7 +535,7 @@ scoreBtns.btnAwayMinus5.addEventListener("click", () => adjustScore("away", -5))
 
 homeNameEl.addEventListener("input", () => {
   if (!requireAdmin()) return;
-  if (!remoteState) return;
+  if (!requireState()) return;
   const div = currentDivision();
   remoteState.divisions[div].homeName = homeNameEl.value || "Home";
   commitLocalChange(div);
@@ -537,7 +543,7 @@ homeNameEl.addEventListener("input", () => {
 
 awayNameEl.addEventListener("input", () => {
   if (!requireAdmin()) return;
-  if (!remoteState) return;
+  if (!requireState()) return;
   const div = currentDivision();
   remoteState.divisions[div].awayName = awayNameEl.value || "Away";
   commitLocalChange(div);
