@@ -193,6 +193,9 @@
  * ============================ */
 const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwHZsj2Yssiizo36MNnwCOR-0t8Ug1mUjaB74-xGal5nEuXmjNgdZvV0aEvIqZxjJ5Z/exec";
 
+let writeInFlight = false;
+let pendingWriteAtMs = 0;
+  
 /** Polling interval (ms) */
 const POLL_MS = 3000;
 
