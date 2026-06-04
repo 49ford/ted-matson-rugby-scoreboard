@@ -1520,15 +1520,23 @@ function applyRemoteState(payload){
       gamePickerU16.style.display = "inline-block";
     }
   }
-  function applyFixtureToDivision(divKey, games, selectedId){
-    const game = games.find(g => g.id === selectedId) || games[0];
-    if (!game) return;
-    state[divKey].selectedGameId = game.id;
-    state[divKey].homeName = game.home;
-    state[divKey].awayName = game.away;
-    saveState();
-    if (currentDivision() === divKey) render();
+ function applyFixtureToDivision(divKey, games, selectedId){
+  const game = games.find(g => g.id === selectedId);
+  if (!game) return;
+
+  state[divKey] = {
+    ...state[divKey],
+    selectedGameId: game.id,
+    homeName: game.home,
+    awayName: game.away
+  };
+
+  saveState();
+
+  if (currentDivision() === divKey) {
+    render();
   }
+}
 
   // Now Playing strip
   function updateNowPlaying(){
@@ -1818,25 +1826,7 @@ function applyRemoteState(payload){
   if (!state["1st XV"].selectedGameId) state["1st XV"].selectedGameId = firstXVGames[0]?.id || "";
   if (!state["2nd XV"].selectedGameId) state["2nd XV"].selectedGameId = secondXVGames[0]?.id || "";
   if (!state["U16"].selectedGameId)    state["U16"].selectedGameId    = u16Games[0]?.id || "";
- function applyFixtureNamesIfPlaceholder(divKey, games){
-  const d = state[divKey];
-  if (!d || !d.selectedGameId) return;
-
-  const isPlaceholder =
-    !d.homeName ||
-    !d.awayName ||
-    d.homeName === "Home" ||
-    d.awayName === "Away" ||
-    d.awayName === "Opposition";
-
-  if (!isPlaceholder) return;
-
-  const game = games.find(g => g.id === d.selectedGameId);
-  if (!game) return;
-
-  d.homeName = game.home;
-  d.awayName = game.away;
-}
+ 
 
 // ✅ Safe initialisation
 applyFixtureNamesIfMissing("1st XV", firstXVGames);
