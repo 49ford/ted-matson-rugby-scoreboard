@@ -1229,16 +1229,36 @@ function applyRemoteState(payload){
   // Anti-revert guard
   if (writeInFlight && incoming && incoming < pendingWriteAtMs) return;
 
-  // ✅ NEW: preserve local timer on scorer devices
-  const preservedTimers = {};
-  if (isScorerDevice){
-    for (const div of Object.keys(state)){
-      preservedTimers[div] = {
-        timerSeconds: state[div].timerSeconds,
-        timerRunning: state[div].timerRunning
-      };
+  // ✅ Preserve team identity locally
+  const preservedNames = {};
+  for (const div of Object.keys(state)){
+    preservedNames[div] = {
+      homeName: state[div].homeName,
+      awayName: state[div].awayName
+    };
+  }
+
+  // Overwrite state from Sheets
+  state = norm.state;
+
+  // ✅ Restore team names after sync
+  for (const div of Object.keys(state)){
+    if (preservedNames[div]){
+      state[div].homeName = preservedNames[div].homeName;
+      state[div].awayName = preservedNames[div].awayName;
     }
   }
+
+  saveState();
+
+  if (incoming) lastRemoteUpdatedAtMs = incoming;
+  render();
+
+  if (writeInFlight && incoming && incoming >= pendingWriteAtMs){
+    writeInFlight = false;
+    pendingWriteAtMs = 0;
+  }
+}
 
   state = norm.state;
 
