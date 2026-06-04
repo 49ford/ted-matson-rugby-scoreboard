@@ -1818,18 +1818,24 @@ function applyRemoteState(payload){
   if (!state["1st XV"].selectedGameId) state["1st XV"].selectedGameId = firstXVGames[0]?.id || "";
   if (!state["2nd XV"].selectedGameId) state["2nd XV"].selectedGameId = secondXVGames[0]?.id || "";
   if (!state["U16"].selectedGameId)    state["U16"].selectedGameId    = u16Games[0]?.id || "";
- function applyFixtureNamesIfMissing(divKey, games){
+ function applyFixtureNamesIfPlaceholder(divKey, games){
   const d = state[divKey];
-  if (!d.selectedGameId) return;
+  if (!d || !d.selectedGameId) return;
 
-  // Only fill names if they are missing or generic
-  if (!d.homeName || d.homeName === "Home" || d.homeName === "Opposition"){
-    const game = games.find(g => g.id === d.selectedGameId);
-    if (game){
-      d.homeName = game.home;
-      d.awayName = game.away;
-    }
-  }
+  const isPlaceholder =
+    !d.homeName ||
+    !d.awayName ||
+    d.homeName === "Home" ||
+    d.awayName === "Away" ||
+    d.awayName === "Opposition";
+
+  if (!isPlaceholder) return;
+
+  const game = games.find(g => g.id === d.selectedGameId);
+  if (!game) return;
+
+  d.homeName = game.home;
+  d.awayName = game.away;
 }
 
 // ✅ Safe initialisation
