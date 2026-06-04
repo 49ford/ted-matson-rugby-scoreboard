@@ -1520,15 +1520,23 @@ function applyRemoteState(payload){
       gamePickerU16.style.display = "inline-block";
     }
   }
-  function applyFixtureToDivision(divKey, games, selectedId){
-    const game = games.find(g => g.id === selectedId) || games[0];
-    if (!game) return;
-    state[divKey].selectedGameId = game.id;
-    state[divKey].homeName = game.home;
-    state[divKey].awayName = game.away;
-    saveState();
-    if (currentDivision() === divKey) render();
+ function applyFixtureToDivision(divKey, games, selectedId){
+  const game = games.find(g => g.id === selectedId);
+  if (!game) return;
+
+  state[divKey] = {
+    ...state[divKey],
+    selectedGameId: game.id,
+    homeName: game.home,
+    awayName: game.away
+  };
+
+  saveState();
+
+  if (currentDivision() === divKey) {
+    render();
   }
+}
 
   // Now Playing strip
   function updateNowPlaying(){
