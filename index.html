@@ -1815,9 +1815,24 @@ function applyRemoteState(payload){
   if (!state["1st XV"].selectedGameId) state["1st XV"].selectedGameId = firstXVGames[0]?.id || "";
   if (!state["2nd XV"].selectedGameId) state["2nd XV"].selectedGameId = secondXVGames[0]?.id || "";
   if (!state["U16"].selectedGameId)    state["U16"].selectedGameId    = u16Games[0]?.id || "";
-  applyFixtureToDivision("1st XV", firstXVGames, state["1st XV"].selectedGameId);
-  applyFixtureToDivision("2nd XV", secondXVGames, state["2nd XV"].selectedGameId);
-  applyFixtureToDivision("U16", u16Games, state["U16"].selectedGameId);
+ function applyFixtureNamesIfMissing(divKey, games){
+  const d = state[divKey];
+  if (!d.selectedGameId) return;
+
+  // Only fill names if they are missing or generic
+  if (!d.homeName || d.homeName === "Home" || d.homeName === "Opposition"){
+    const game = games.find(g => g.id === d.selectedGameId);
+    if (game){
+      d.homeName = game.home;
+      d.awayName = game.away;
+    }
+  }
+}
+
+// ✅ Safe initialisation
+applyFixtureNamesIfMissing("1st XV", firstXVGames);
+applyFixtureNamesIfMissing("2nd XV", secondXVGames);
+applyFixtureNamesIfMissing("U16", u16Games);
 
   if (shouldShowA2HS()){
     setTimeout(showA2HS, 1200);
