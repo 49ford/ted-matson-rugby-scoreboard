@@ -1217,27 +1217,48 @@
     return null;
   }
 
-  function applyRemoteState(payload){
-    const norm = normalizeRemotePayload(payload);
-    if (!norm) return;
+function applyRemoteState(payload){
+  const norm = normalizeRemotePayload(payload);
+  if (!norm) return;
 
-    const incoming = norm.updatedAtMs || 0;
+  const incoming = norm.updatedAtMs || 0;
 
-    // Anti-revert guard (only meaningful on scorer device, but safe everywhere)
-    if (writeInFlight && incoming && incoming < pendingWriteAtMs) return;
+  // Anti-revert guard
+  if (writeInFlight && incoming && incoming < pendingWriteAtMs) return;
 
-    state = norm.state;
-    saveState();
-
-    if (incoming) lastRemoteUpdatedAtMs = incoming;
-    render();
-
-    // If remote has caught up, release lock
-    if (writeInFlight && incoming && incoming >= pendingWriteAtMs){
-      writeInFlight = false;
-      pendingWriteAtMs = 0;
+  // ✅ NEW: preserve local timer on scorer devices
+  const preservedTimers = {};
+  if (isScorerDevice){
+    for (const div of Object.keys(state)){
+      preservedTimers[div] = {
+        timerSeconds: state[div].timerSeconds,
+        timerRunning: state[div].timerRunning
+      };
     }
   }
+
+  state = norm.state;
+
+  // ✅ Restore local timer if this device was the scorer
+  if (isScorerDevice){
+    for (const div of Object.keys(state)){
+      if (preservedTimers[div]?.timerRunning){
+        state[div].timerSeconds = preservedTimers[div].timerSeconds;
+        state[div].timerRunning = preservedTimers[div].timerRunning;
+      }
+    }
+  }
+
+  saveState();
+
+  if (incoming) lastRemoteUpdatedAtMs = incoming;
+  render();
+
+  if (writeInFlight && incoming && incoming >= pendingWriteAtMs){
+    writeInFlight = false;
+    pendingWriteAtMs = 0;
+  }
+}
 
   function jsonpGet(url, onData){
     const cb = "__tm_cb_" + Math.random().toString(36).slice(2);
