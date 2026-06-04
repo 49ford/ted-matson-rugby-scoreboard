@@ -1229,36 +1229,16 @@ function applyRemoteState(payload){
   // Anti-revert guard
   if (writeInFlight && incoming && incoming < pendingWriteAtMs) return;
 
-  // ✅ Preserve team identity locally
-  const preservedNames = {};
-  for (const div of Object.keys(state)){
-    preservedNames[div] = {
-      homeName: state[div].homeName,
-      awayName: state[div].awayName
-    };
-  }
-
-  // Overwrite state from Sheets
-  state = norm.state;
-
-  // ✅ Restore team names after sync
-  for (const div of Object.keys(state)){
-    if (preservedNames[div]){
-      state[div].homeName = preservedNames[div].homeName;
-      state[div].awayName = preservedNames[div].awayName;
+  // ✅ NEW: preserve local timer on scorer devices
+  const preservedTimers = {};
+  if (isScorerDevice){
+    for (const div of Object.keys(state)){
+      preservedTimers[div] = {
+        timerSeconds: state[div].timerSeconds,
+        timerRunning: state[div].timerRunning
+      };
     }
   }
-
-  saveState();
-
-  if (incoming) lastRemoteUpdatedAtMs = incoming;
-  render();
-
-  if (writeInFlight && incoming && incoming >= pendingWriteAtMs){
-    writeInFlight = false;
-    pendingWriteAtMs = 0;
-  }
-}
 
   state = norm.state;
 
@@ -1540,23 +1520,15 @@ function applyRemoteState(payload){
       gamePickerU16.style.display = "inline-block";
     }
   }
- function applyFixtureToDivision(divKey, games, selectedId){
-  const game = games.find(g => g.id === selectedId);
-  if (!game) return;
-
-  state[divKey] = {
-    ...state[divKey],
-    selectedGameId: game.id,
-    homeName: game.home,
-    awayName: game.away
-  };
-
-  saveState();
-
-  if (currentDivision() === divKey) {
-    render();
+  function applyFixtureToDivision(divKey, games, selectedId){
+    const game = games.find(g => g.id === selectedId) || games[0];
+    if (!game) return;
+    state[divKey].selectedGameId = game.id;
+    state[divKey].homeName = game.home;
+    state[divKey].awayName = game.away;
+    saveState();
+    if (currentDivision() === divKey) render();
   }
-}
 
   // Now Playing strip
   function updateNowPlaying(){
@@ -1846,7 +1818,19 @@ function applyRemoteState(payload){
   if (!state["1st XV"].selectedGameId) state["1st XV"].selectedGameId = firstXVGames[0]?.id || "";
   if (!state["2nd XV"].selectedGameId) state["2nd XV"].selectedGameId = secondXVGames[0]?.id || "";
   if (!state["U16"].selectedGameId)    state["U16"].selectedGameId    = u16Games[0]?.id || "";
- 
+ function applyFixtureNamesIfMissing(divKey, games){
+  const d = state[divKey];
+  if (!d.selectedGameId) return;
+
+  // Only fill names if they are missing or generic
+  if (!d.homeName || d.homeName === "Home" || d.homeName === "Opposition"){
+    const game = games.find(g => g.id === d.selectedGameId);
+    if (game){
+      d.homeName = game.home;
+      d.awayName = game.away;
+    }
+  }
+}
 
 // ✅ Safe initialisation
 applyFixtureNamesIfMissing("1st XV", firstXVGames);
