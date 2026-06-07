@@ -1722,7 +1722,11 @@ function applyRemoteState(payload){
   timerStartBtn.addEventListener("click", () => {
     if (!requireAdminForCurrentDivision()) return;
     const div = currentDivision();
-    state[div].timerRunning = !state[div].timerRunning;
+    
+    const d = state[div];
+    d.timerRunning = !d.timerRunning;
+    d.timerLastTickMs = d.timerRunning ? Date.now() : 0;
+    
     saveState();
     renderTimer();
     pulseLiveBadge();
