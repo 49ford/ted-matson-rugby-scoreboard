@@ -1392,7 +1392,15 @@ function applyRemoteState(payload){
     let changed = false;
     for (const div of Object.keys(defaultState)){
       if (state[div].timerRunning){
-        state[div].timerSeconds += 1;
+       const now = Date.now();
+const last = state[div].timerLastTickMs || now;
+const deltaSec = Math.floor((now - last) / 1000);
+
+if (deltaSec > 0){
+  state[div].timerSeconds += deltaSec;
+  state[div].timerLastTickMs = last + deltaSec * 1000;
+  changed = true;
+}
         changed = true;
       }
     }
