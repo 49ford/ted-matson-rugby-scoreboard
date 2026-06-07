@@ -1176,9 +1176,9 @@ select option {
   // ==========================================================
   const STORAGE_KEY = "tm_scoreboard_state_v2";
   const defaultState = {
-    "1st XV": { home: 0, away: 0, homeName: "Geelong Grammar 1st XV", awayName: "Opposition", selectedGameId: firstXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false },
-    "2nd XV": { home: 0, away: 0, homeName: "Geelong Grammar 2nd XV", awayName: "Opposition", selectedGameId: secondXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false },
-    "U16":    { home: 0, away: 0, homeName: "Geelong Grammar U16",    awayName: "Opposition", selectedGameId: u16Games[0]?.id || "", timerSeconds: 0, timerRunning: false }
+    "1st XV": { home: 0, away: 0, homeName: "Geelong Grammar 1st XV", awayName: "Opposition", selectedGameId: firstXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false, timerLastTickMs: 0 },
+    "2nd XV": { home: 0, away: 0, homeName: "Geelong Grammar 2nd XV", awayName: "Opposition", selectedGameId: secondXVGames[0]?.id || "", timerSeconds: 0, timerRunning: false, timerLastTickMs: 0 },
+    "U16":    { home: 0, away: 0, homeName: "Geelong Grammar U16",    awayName: "Opposition", selectedGameId: u16Games[0]?.id || "", timerSeconds: 0, timerRunning: false, timerLastTickMs: 0 }
   };
 
   function loadState(){
@@ -1190,6 +1190,7 @@ select option {
         if (!parsed[div]) parsed[div] = structuredClone(defaultState[div]);
         if (typeof parsed[div].timerSeconds !== "number") parsed[div].timerSeconds = 0;
         if (typeof parsed[div].timerRunning !== "boolean") parsed[div].timerRunning = false;
+        if (typeof parsed[div].timerLastTickMs !== "number") parsed[div].timerLastTickMs = 0;
       }
       return parsed;
     } catch {
