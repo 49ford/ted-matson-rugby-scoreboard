@@ -691,6 +691,20 @@ select option {
         color: rgba(255,255,255,0.75);
         margin-top: 6px;
       }
+      .timer-status{
+  margin-left: 10px;
+  font-size: 0.85em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.timer-status.live{
+  color: #3ddc84; /* green */
+}
+
+.timer-status.paused{
+  color: #9aa3ad; /* grey */
+}
     }
   </style>
 </head>
@@ -743,6 +757,7 @@ select option {
     <div class="timerWrap" id="timerWrap" aria-label="Match timer" title="Double-tap timer to exit TV Mode">
       <span id="timerPeriod" class="timerPeriod">H1</span>
       <span id="timerDisplay" class="timerDisplay">00:00</span>
+      <span id="timerStatus" class="timer-status"></span>
       <button class="timerBtn primary" id="timerStartBtn" type="button">Start</button>
       <button class="timerBtn danger" id="timerResetBtn" type="button">Reset</button>
     </div>
@@ -1431,10 +1446,17 @@ for (const div of Object.keys(state)) {
     const last = d.timerLastTickMs || now;
     const extra = d.timerRunning ? Math.max(0, Math.floor((now - last) / 1000)) : 0;
     const sec = (d.timerSeconds || 0) + extra;
-
+    
     timerDisplayEl.textContent = formatTime(sec);
     timerPeriodEl.textContent = periodLabel(sec);
     timerStartBtn.textContent = d.timerRunning ? "Pause" : "Start";
+
+    const statusEl = document.getElementById("timerStatus");
+    if (statusEl){
+      statusEl.textContent = d.timerRunning ? "LIVE" : "PAUSED";
+      statusEl.className = "timer-status " + (d.timerRunning ? "live" : "paused");
+}
+
     if (d.timerRunning) setLiveBadge(true, false);
     else if (!liveBadgeEl.classList.contains("pulse")) setLiveBadge(false, false);
   }
