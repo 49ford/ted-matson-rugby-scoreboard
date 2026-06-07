@@ -942,7 +942,7 @@
 
   function lockAdmin(isAuto = false){
     adminSession = { unlocked:false, allowed:[], label:"Locked" };
- 
+    adminPinForSync = null;
     saveAdminSession();
     clearAutoLockTimer();
     saveState();
@@ -1239,27 +1239,19 @@ function applyRemoteState(payload){
       };
     }
   }
-// ✅ Preserve local timers BEFORE state overwrite
-const preservedTimers = {};
-if (isScorerDevice){
-  for (const div of Object.keys(state)){
-    preservedTimers[div] = {
-      timerSeconds: state[div].timerSeconds,
-      timerRunning: state[div].timerRunning
-    };
-  }
-}
+
   state = norm.state;
 
-// ✅ Restore local timers AFTER overwrite (always, on scorer device)
-if (isScorerDevice){
-  for (const div of Object.keys(state)){
-    if (preservedTimers[div]){
-      state[div].timerSeconds = preservedTimers[div].timerSeconds;
-      state[div].timerRunning = preservedTimers[div].timerRunning;
+  // ✅ Restore local timer if this device was the scorer
+  if (isScorerDevice){
+    for (const div of Object.keys(state)){
+      if (preservedTimers[div]?.timerRunning){
+        state[div].timerSeconds = preservedTimers[div].timerSeconds;
+        state[div].timerRunning = preservedTimers[div].timerRunning;
+      }
     }
   }
-}
+
   saveState();
 
   if (incoming) lastRemoteUpdatedAtMs = incoming;
@@ -1528,23 +1520,15 @@ if (isScorerDevice){
       gamePickerU16.style.display = "inline-block";
     }
   }
- function applyFixtureToDivision(divKey, games, selectedId){
-  const game = games.find(g => g.id === selectedId);
-  if (!game) return;
-
-  state[divKey] = {
-    ...state[divKey],
-    selectedGameId: game.id,
-    homeName: game.home,
-    awayName: game.away
-  };
-
-  saveState();
-
-  if (currentDivision() === divKey) {
-    render();
+  function applyFixtureToDivision(divKey, games, selectedId){
+    const game = games.find(g => g.id === selectedId) || games[0];
+    if (!game) return;
+    state[divKey].selectedGameId = game.id;
+    state[divKey].homeName = game.home;
+    state[divKey].awayName = game.away;
+    saveState();
+    if (currentDivision() === divKey) render();
   }
-}
 
   // Now Playing strip
   function updateNowPlaying(){
