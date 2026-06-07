@@ -709,7 +709,6 @@ select option {
   background: rgba(255,255,255,0.06);
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.15);
-  display: none; .matchday-bbq { display: none; }
 }
 
 /* ✅ Force LIVE / PAUSED colours in ALL modes (admin + spectator) */
@@ -845,7 +844,7 @@ select option {
     <div id="resultsGrid" class="resultsGrid" aria-live="polite"></div>
   </div>
 
- <div id="matchdayBBQ" class="matchday-bbq">
+ <div class="matchday-bbq">
    Match Day BBQ — 🍳Bacon and Eggs <strong>$6</strong> · Drinks <strong>$3</strong> · 🌭Gourmet Sausages <strong>$5</strong>
 </div>
 
@@ -1234,16 +1233,7 @@ select option {
   let state = loadState();
   function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function currentDivision(){ return divisionSelect.value; }
-  
-  if (!todaysGame) return;
 
-  // Show BBQ ONLY if Geelong Grammar is the home team
-  const isHomeGame = /geelong grammar/i.test(todaysGame.home);
-  if (isHomeGame){
-    bbqEl.style.display = "block";
-  }
-}
-  
 // ==========================================================
 // Timer catch-up on wake (fixes iPhone sleep / background)
 // ==========================================================
@@ -1357,56 +1347,7 @@ for (const div of Object.keys(state)) {
     pendingWriteAtMs = 0;
   }
 }
-function isTodayLocal(yyyyMmDd){
-  // yyyyMmDd like "2026-06-13"
-  const y = Number(yyyyMmDd.slice(0,4));
-  const m = Number(yyyyMmDd.slice(5,7)) - 1;
-  const d = Number(yyyyMmDd.slice(8,10));
-  const today = new Date();
-  return (
-    today.getFullYear() === y &&
-    today.getMonth() === m &&
-    today.getDate() === d
-  );
-}
 
-function updateMatchdayBBQ(){
-  const bbqEl = document.getElementById("matchdayBBQ");
-  if (!bbqEl) return;
-
-  // Always hide first (prevents stale display)
-  bbqEl.style.display = "none";
-
-  // Only applies to 1st XV
-  if (currentDivision() !== "1st XV") return;
-
-  // Find today's 1st XV fixture by DATE (source of truth)
-  const today = new Date();
-  const gameToday = firstXVGames.find(g => {
-    if (!g.date || g.date.length !== 10) return false;
-
-    const y = Number(g.date.slice(0,4));
-    const m = Number(g.date.slice(5,7)) - 1;
-    const d = Number(g.date.slice(8,10));
-
-    return (
-      today.getFullYear() === y &&
-      today.getMonth() === m &&
-      today.getDate() === d
-    );
-  });
-
-  if (!gameToday) return;
-
-  // Show BBQ ONLY if Geelong Grammar is the HOME team
-  const isHomeGame = /geelong grammar/i.test(gameToday.home);
-  if (!isHomeGame) return;
-
-  bbqEl.style.display = "block";
-}
-  updateMatchdayBBQ();
-
-  
   function jsonpGet(url, onData){
     const cb = "__tm_cb_" + Math.random().toString(36).slice(2);
     const script = document.createElement("script");
