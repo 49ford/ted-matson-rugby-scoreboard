@@ -698,12 +698,13 @@ select option {
   letter-spacing: 0.05em;
 }
 
-.timer-status.live{
-  color: #3ddc84; /* green */
+/* ✅ Ensure LIVE / PAUSED colours show for spectators */
+body .timer-status.live{
+  color: #3ddc84 !important;
 }
 
-.timer-status.paused{
-  color: #9aa3ad; /* grey */
+body .timer-status.paused{
+  color: #9aa3ad !important;
 }
     }
   </style>
