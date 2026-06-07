@@ -1291,7 +1291,7 @@ function applyRemoteState(payload){
   }
 
   function schedulePush(force=false){
-    if (!adminSession.unlocked) return;
+    if (!isScorerDevice) return;
     if (!adminPinForSync) return;
 
     const now = Date.now();
