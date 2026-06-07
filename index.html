@@ -1247,6 +1247,13 @@ function applyRemoteState(payload){
   }
 
   state = norm.state;
+  
+  // ✅ Ensure timerLastTickMs exists after remote sync
+for (const div of Object.keys(state)) {
+  if (typeof state[div].timerLastTickMs !== "number") {
+    state[div].timerLastTickMs = Date.now();
+  }
+}
 
   // ✅ Restore local timer if this device was the scorer
   if (isScorerDevice){
@@ -1381,8 +1388,13 @@ function applyRemoteState(payload){
   function renderTimer(){
     const div = currentDivision();
     const d = state[div];
-    timerDisplayEl.textContent = formatTime(d.timerSeconds);
-    timerPeriodEl.textContent = periodLabel(d.timerSeconds);
+    const now = Date.now();
+    const last = d.timerLastTickMs || now;
+    const extra = d.timerRunning ? Math.max(0, Math.floor((now - last) / 1000)) : 0;
+    const sec = (d.timerSeconds || 0) + extra;
+
+    timerDisplayEl.textContent = formatTime(sec);
+    timerPeriodEl.textContent = periodLabel(sec);
     timerStartBtn.textContent = d.timerRunning ? "Pause" : "Start";
     if (d.timerRunning) setLiveBadge(true, false);
     else if (!liveBadgeEl.classList.contains("pulse")) setLiveBadge(false, false);
