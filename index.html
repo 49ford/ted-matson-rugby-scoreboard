@@ -942,7 +942,7 @@
 
   function lockAdmin(isAuto = false){
     adminSession = { unlocked:false, allowed:[], label:"Locked" };
- 
+    adminPinForSync = null;
     saveAdminSession();
     clearAutoLockTimer();
     saveState();
@@ -1239,27 +1239,19 @@ function applyRemoteState(payload){
       };
     }
   }
-// ✅ Preserve local timers BEFORE state overwrite
-const preservedTimers = {};
-if (isScorerDevice){
-  for (const div of Object.keys(state)){
-    preservedTimers[div] = {
-      timerSeconds: state[div].timerSeconds,
-      timerRunning: state[div].timerRunning
-    };
-  }
-}
+
   state = norm.state;
 
-// ✅ Restore local timers AFTER overwrite (always, on scorer device)
-if (isScorerDevice){
-  for (const div of Object.keys(state)){
-    if (preservedTimers[div]){
-      state[div].timerSeconds = preservedTimers[div].timerSeconds;
-      state[div].timerRunning = preservedTimers[div].timerRunning;
+  // ✅ Restore local timer if this device was the scorer
+  if (isScorerDevice){
+    for (const div of Object.keys(state)){
+      if (preservedTimers[div]?.timerRunning){
+        state[div].timerSeconds = preservedTimers[div].timerSeconds;
+        state[div].timerRunning = preservedTimers[div].timerRunning;
+      }
     }
   }
-}
+
   saveState();
 
   if (incoming) lastRemoteUpdatedAtMs = incoming;
