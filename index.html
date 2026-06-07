@@ -1388,8 +1388,9 @@ function computedTimerSeconds(d){
   function renderTimer(){
     const div = currentDivision();
     const d = state[div];
-    timerDisplayEl.textContent = formatTime(d.timerSeconds);
-    timerPeriodEl.textContent = periodLabel(d.timerSeconds);
+   const sec = computedTimerSeconds(d);
+timerDisplayEl.textContent = formatTime(sec);
+timerPeriodEl.textContent = periodLabel(sec);
     timerStartBtn.textContent = d.timerRunning ? "Pause" : "Start";
     if (d.timerRunning) setLiveBadge(true, false);
     else if (!liveBadgeEl.classList.contains("pulse")) setLiveBadge(false, false);
