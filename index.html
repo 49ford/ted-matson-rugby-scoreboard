@@ -1405,7 +1405,7 @@ if (isScorerDevice){
       if (state[div].timerRunning) setLiveBadge(true, false);
 
       // push timer updates (throttled) from admin device only
-      if (isScorerDevice && adminPinForSync){
+      if (isScorerDevice && adminSession.unlocked){
         markPendingWrite();
         schedulePush(false);
       }
