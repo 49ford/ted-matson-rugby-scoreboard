@@ -709,6 +709,7 @@ select option {
   background: rgba(255,255,255,0.06);
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.15);
+  display: none;
 }
 
 /* ✅ Force LIVE / PAUSED colours in ALL modes (admin + spectator) */
@@ -1368,7 +1369,47 @@ for (const div of Object.keys(state)) {
     pendingWriteAtMs = 0;
   }
 }
+function isTodayLocal(yyyyMmDd){
+  // yyyyMmDd like "2026-06-13"
+  const y = Number(yyyyMmDd.slice(0,4));
+  const m = Number(yyyyMmDd.slice(5,7)) - 1;
+  const d = Number(yyyyMmDd.slice(8,10));
+  const today = new Date();
+  return (
+    today.getFullYear() === y &&
+    today.getMonth() === m &&
+    today.getDate() === d
+  );
+}
 
+function updateMatchdayBBQ(){
+  const bbqEl = document.getElementById("matchdayBBQ");
+  if (!bbqEl) return;
+
+  // Only ever show for 1st XV
+  if (currentDivision() !== "1st XV"){
+    bbqEl.style.display = "none";
+    return;
+  }
+
+  const selId = state["1st XV"]?.selectedGameId || "";
+  const game = firstXVGames.find(g => g.id === selId);
+  if (!game){
+    bbqEl.style.display = "none";
+    return;
+  }
+
+  // Match day comes from the fixture ID (YYYY-MM-DD-xxxx)
+  const matchDate = game.id.slice(0, 10); // "2026-06-13"
+
+  const isMatchDay = isTodayLocal(matchDate);
+  const isHomeGame = /geelong grammar/i.test(game.home);  // fixture truth, not editable name
+
+  bbqEl.style.display = (isMatchDay && isHomeGame) ? "block" : "none";
+}
+  updateMatchdayBBQ();
+
+  
   function jsonpGet(url, onData){
     const cb = "__tm_cb_" + Math.random().toString(36).slice(2);
     const script = document.createElement("script");
