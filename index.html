@@ -1403,7 +1403,9 @@ function updateMatchdayBBQ(){
   const matchDate = game.id.slice(0, 10); // "2026-06-13"
 
   const isMatchDay = isTodayLocal(matchDate);
-  const isHomeGame = /geelong grammar/i.test(game.home);  // fixture truth, not editable name
+  const isHomeGame = /\(Home\)/i.test(game.label) || /Geelong Grammar/i.test(game.venue);
+  
+  // fixture truth, not editable name
 
   bbqEl.style.display = (isMatchDay && isHomeGame) ? "block" : "none";
 }
