@@ -1753,14 +1753,20 @@ pulseLiveBadge();
 if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
     
   timerResetBtn.addEventListener("click", () => {
-    if (!requireAdminForCurrentDivision()) return;
-    const div = currentDivision();
-    state[div].timerSeconds = 0;
-    state[div].timerRunning = false;
-    saveState();
-    renderTimer();
-    pulseLiveBadge();
-    if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
+   const div = currentDivision();
+const d = state[div];
+
+d.timerBaseSeconds = 0;
+d.timerStartedAtMs = 0;
+d.timerRunning = false;
+
+// keep for backward compatibility with old state
+d.timerSeconds = 0;
+
+saveState();
+renderTimer();
+pulseLiveBadge();
+}
   });
 
   homeNameEl.addEventListener("input", () => {
