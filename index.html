@@ -709,7 +709,7 @@ select option {
   background: rgba(255,255,255,0.06);
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.15);
-  display: none;
+  display: none; .matchday-bbq { display: none; }
 }
 
 /* ✅ Force LIVE / PAUSED colours in ALL modes (admin + spectator) */
@@ -1235,30 +1235,6 @@ select option {
   function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function currentDivision(){ return divisionSelect.value; }
   
-function updateMatchdayBBQ(){
-  const bbqEl = document.getElementById("matchdayBBQ");
-  if (!bbqEl) return;
-
-  // Always hide by default
-  bbqEl.style.display = "none";
-
-  // Only for 1st XV
-  if (currentDivision() !== "1st XV") return;
-
-  // Find today's 1st XV game from the draw
-  const today = new Date();
-  const todaysGame = firstXVGames.find(g => {
-    if (!g.date) return false;
-    const y = Number(g.date.slice(0,4));
-    const m = Number(g.date.slice(5,7)) - 1;
-    const d = Number(g.date.slice(8,10));
-    return (
-      today.getFullYear() === y &&
-      today.getMonth() === m &&
-      today.getDate() === d
-    );
-  });
-
   if (!todaysGame) return;
 
   // Show BBQ ONLY if Geelong Grammar is the home team
@@ -1398,28 +1374,35 @@ function updateMatchdayBBQ(){
   const bbqEl = document.getElementById("matchdayBBQ");
   if (!bbqEl) return;
 
-  // Only ever show for 1st XV
-  if (currentDivision() !== "1st XV"){
-    bbqEl.style.display = "none";
-    return;
-  }
+  // Always hide first (prevents stale display)
+  bbqEl.style.display = "none";
 
-  const selId = state["1st XV"]?.selectedGameId || "";
-  const game = firstXVGames.find(g => g.id === selId);
-  if (!game){
-    bbqEl.style.display = "none";
-    return;
-  }
+  // Only applies to 1st XV
+  if (currentDivision() !== "1st XV") return;
 
-  // Match day comes from the fixture ID (YYYY-MM-DD-xxxx)
-  const matchDate = game.id.slice(0, 10); // "2026-06-13"
+  // Find today's 1st XV fixture by DATE (source of truth)
+  const today = new Date();
+  const gameToday = firstXVGames.find(g => {
+    if (!g.date || g.date.length !== 10) return false;
 
-  const isMatchDay = isTodayLocal(matchDate);
-  const isHomeGame = /\(Home\)/i.test(game.label) || /Geelong Grammar/i.test(game.venue);
-  
-  // fixture truth, not editable name
+    const y = Number(g.date.slice(0,4));
+    const m = Number(g.date.slice(5,7)) - 1;
+    const d = Number(g.date.slice(8,10));
 
-  bbqEl.style.display = (isMatchDay && isHomeGame) ? "block" : "none";
+    return (
+      today.getFullYear() === y &&
+      today.getMonth() === m &&
+      today.getDate() === d
+    );
+  });
+
+  if (!gameToday) return;
+
+  // Show BBQ ONLY if Geelong Grammar is the HOME team
+  const isHomeGame = /geelong grammar/i.test(gameToday.home);
+  if (!isHomeGame) return;
+
+  bbqEl.style.display = "block";
 }
   updateMatchdayBBQ();
 
