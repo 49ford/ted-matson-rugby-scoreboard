@@ -1411,7 +1411,7 @@ if (deltaSec > 0){
       if (state[div].timerRunning) setLiveBadge(true, false);
 
       // push timer updates (throttled) from admin device only
-      if (isScorerDevice && adminSession.unlocked){
+     if (isScorerDevice){
         markPendingWrite();
         schedulePush(false);
       }
