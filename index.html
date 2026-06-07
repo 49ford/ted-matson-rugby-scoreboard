@@ -1396,27 +1396,15 @@ timerPeriodEl.textContent = periodLabel(sec);
     else if (!liveBadgeEl.classList.contains("pulse")) setLiveBadge(false, false);
   }
 
-  setInterval(() => {
-    let changed = false;
-    for (const div of Object.keys(defaultState)){
-      if (state[div].timerRunning){
-        state[div].timerSeconds += 1;
-        changed = true;
-      }
-    }
-    if (changed){
-      saveState();
-      renderTimer();
-      const div = currentDivision();
-      if (state[div].timerRunning) setLiveBadge(true, false);
+setInterval(() => {
+  renderTimer();
 
-      // push timer updates (throttled) from admin device only
-      if (isScorerDevice && adminSession.unlocked){
-        markPendingWrite();
-        schedulePush(false);
-      }
+  // keep LIVE badge correct for current division
+  const div = currentDivision();
+  if (state[div].timerRunning) setLiveBadge(true, false);
+}, 1000);
     }
-  }, 1000);
+ 
 
   // ==========================================================
   // RESULTS rendering (unchanged)
