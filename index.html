@@ -1202,6 +1202,46 @@ select option {
   function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function currentDivision(){ return divisionSelect.value; }
 
+// ==========================================================
+// Timer catch-up on wake (fixes iPhone sleep / background)
+// ==========================================================
+function catchUpTimersOnWake(){
+  const now = Date.now();
+  let changed = false;
+
+  for (const div of Object.keys(state)){
+    const d = state[div];
+    if (!d || !d.timerRunning) continue;
+
+    const last = d.timerLastTickMs || now;
+    const deltaSec = Math.floor((now - last) / 1000);
+
+    if (deltaSec > 0){
+      d.timerSeconds = (d.timerSeconds || 0) + deltaSec;
+      d.timerLastTickMs = last + deltaSec * 1000;
+      changed = true;
+    }
+  }
+
+  if (changed){
+    saveState();
+    renderTimer();
+
+    // If sync helpers exist, publish the corrected time
+    if (typeof markPendingWrite === "function" && typeof schedulePush === "function"){
+      try { markPendingWrite(); schedulePush(true); } catch {}
+    }
+  }
+}
+
+// When the tab/app becomes visible again (after sleep)
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) catchUpTimersOnWake();
+});
+
+// When the tab regains focus (unlock / return to Chrome)
+window.addEventListener("focus", catchUpTimersOnWake);
+  
   // ==========================================================
   // V2 Sync helpers
   // ==========================================================
