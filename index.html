@@ -1728,15 +1728,30 @@ timerPeriodEl.textContent = periodLabel(sec);
   });
 
   timerStartBtn.addEventListener("click", () => {
-    if (!requireAdminForCurrentDivision()) return;
-    const div = currentDivision();
-    state[div].timerRunning = !state[div].timerRunning;
-    saveState();
-    renderTimer();
-    pulseLiveBadge();
-    if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
-  });
+   const div = currentDivision();
+const d = state[div];
+const now = Date.now();
 
+if (!d.timerRunning) {
+  // START timer
+  d.timerRunning = true;
+  d.timerStartedAtMs = now;
+} else {
+  // PAUSE timer – fold elapsed time into base
+  const elapsed = Math.max(
+    0,
+    Math.floor((now - (d.timerStartedAtMs || now)) / 1000)
+  );
+  d.timerBaseSeconds = (d.timerBaseSeconds || 0) + elapsed;
+  d.timerRunning = false;
+  d.timerStartedAtMs = 0;
+}
+
+saveState();
+renderTimer();
+pulseLiveBadge();
+if (isScorerDevice){ markPendingWrite(); schedulePush(true); }
+    
   timerResetBtn.addEventListener("click", () => {
     if (!requireAdminForCurrentDivision()) return;
     const div = currentDivision();
