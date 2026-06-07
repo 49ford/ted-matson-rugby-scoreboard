@@ -844,7 +844,7 @@ select option {
     <div id="resultsGrid" class="resultsGrid" aria-live="polite"></div>
   </div>
 
- <div class="matchday-bbq">
+ <div id="matchdayBBQ" class="matchday-bbq">
    Match Day BBQ — 🍳Bacon and Eggs <strong>$6</strong> · Drinks <strong>$3</strong> · 🌭Gourmet Sausages <strong>$5</strong>
 </div>
 
@@ -1233,7 +1233,28 @@ select option {
   let state = loadState();
   function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function currentDivision(){ return divisionSelect.value; }
+  
+  function updateMatchdayBBQ(){
+  const bbqEl = document.getElementById("matchdayBBQ");
+  if (!bbqEl) return;
 
+  const div = currentDivision();
+  if (div !== "1st XV"){
+    bbqEl.style.display = "none";
+    return;
+  }
+
+  const d = state[div];
+  if (!d || !d.homeName) {
+    bbqEl.style.display = "none";
+    return;
+  }
+
+  // Show ONLY if Geelong Grammar is the home team
+  const isHomeGame = d.homeName.toLowerCase().includes("geelong");
+  bbqEl.style.display = isHomeGame ? "block" : "none";
+}
+  
 // ==========================================================
 // Timer catch-up on wake (fixes iPhone sleep / background)
 // ==========================================================
